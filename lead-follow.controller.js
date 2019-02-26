@@ -44,6 +44,15 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
     $scope.deleteDuty = function(index){
         $scope.duties.splice(index,1);
     };
+    $scope.deleteInspect = function(index){
+        $scope.inspections.splice(index,1);
+    };
+    $scope.deleteRank = function(index){
+        $scope.rank.splice(index,1);
+    };
+    $scope.deletePosit = function(index){
+        $scope.pos.splice(index,1);
+    };
 
     //Kali changes end here
 
@@ -267,7 +276,7 @@ $http ({
 };
     
     //update position entries
-    $scope.updatePos = function() 
+    $scope.updatePosit = function()
     {
         //loops for # rows in table
         for (var j=0; j<$scope.pos.length; j++)
@@ -388,8 +397,8 @@ $http ({
 
                 document.getElementById('i1').value = '';
                 document.getElementById('i2').value = '';
-                document.getElementById('i3').value = '';
-                document.getElementById('i4').checked = false;
+                document.getElementById('i3').checked = false;
+                document.getElementById('i4').value = '';
                 document.getElementById('i5').value = '';
 
                 alert("updated: [lead-follow_createInspections.php" + JSON.stringify(response));
@@ -399,7 +408,7 @@ $http ({
     };
     
     //create position entry
-    $scope.CreatePos = function() 
+    $scope.CreatePosit = function()
     {
         var sendData=angular.copy($scope.posit);
         
@@ -422,6 +431,7 @@ $http ({
                     sendData.PositionID=response.data.id;
                     //display new entry
                     $scope.pos.push(sendData);
+
                 alert("updated: [lead-follow_createPositions.php" + JSON.stringify(response));
             },function(result){
                 alert("Failed");
@@ -447,6 +457,12 @@ $http ({
                     sendData.JBRankID=response.data.id;
                     $scope.rank.push(sendData);
                     //alert("data updated")
+
+                document.getElementById('r1').value = '';
+                document.getElementById('r2').value = '';
+                document.getElementById('r3').value = '';
+                document.getElementById('r4').checked = false;
+
                 alert("updated: [lead-follow_createRanks.php" + JSON.stringify(response));
             },function(result){
                 alert("Failed");
