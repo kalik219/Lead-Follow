@@ -27,6 +27,8 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
     //automatically hide the duty save/cancel buttons
     //TODO: automatically hide buttons of all other sections
     document.getElementById("dutySaveCancelButtons").style.display ="none";
+    document.getElementById("taskSaveCancelButtons").style.display ="none";
+
 
     /*
     makes the section editable, displays the save/cancel buttons
@@ -37,82 +39,25 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
             $scope.editDuty = false;
             $scope.backup_duties = angular.copy($scope.duties);                        //added 2/26 - save backup before updates made?
 
-            document.getElementById("editButton").style.display = "none";
+            document.getElementById("editButtonDuties").style.display = "none";
             var element1 = document.getElementById("dutySaveCancelButtons");
             if (element1.style.display == 'none') {
                 element1.style.display = 'block';
             }
         }
+        else if(section=="tasks"){
+            $scope.editTasks = false;
+            $scope.backup_tasks = angular.copy($scope.tasks);
+
+            document.getElementById("editButtonTasks").style.display = "none";
+            var element1 = document.getElementById("taskSaveCancelButtons");
+            if (element1.style.display == 'none') {
+                element1.style.display = 'block';
+            }
+
+        }
 
     };
-    
-    //updates tblcadetClassEvents(task table)
-    $scope.update = function() 
-    {
-        //loops for # rows in table
-        for (var j=0; j<$scope.tasks.length; j++)
-        {
-            //copy current row
-            var sendData=angular.copy($scope.tasks[j]);
-            sendData.EventDate+="";//make the whole thing a string
-
-        //Andrew dateArray added here
-            var dateArray=sendData.EventDate.split(" ");//split by space to get rid of time
-            var month;
-            if(dateArray[1]==='Jan')
-                month="01";
-            else if(dateArray[1]==='Feb')
-                month="02";
-            else if(dateArray[1]==='Mar')
-                month="03";
-            else if(dateArray[1]==='Apr')
-                month="04";
-            else if(dateArray[1]==='May')
-                month="05";
-            else if(dateArray[1]==='Jun')
-                month="06";
-            else if(dateArray[1]==='Jul')
-                month="07";
-            else if(dateArray[1]==='Aug')
-                month="08";
-            else if(dateArray[1]==='Sep')
-                month="09";
-            else if(dateArray[1]==='Oct')
-                month="10";
-            else if(dateArray[1]==='Nov')
-                month="11";
-            else
-                month="12";
-
-
-            var dateString=dateArray[3]+'-'+month+'-'+dateArray[2];//off by one YMD
-        //Andrew dateArray change end
-
-            sendData.EventDate=dateString;
-            //delete not needed info
-            delete sendData.Task;
-            delete sendData.TaskNumber;
-
-            //update using updateLeadFollow.php
-$http ({
-                method: 'POST',
-                url: "./php/lead-follow_updateLeadFollow.php",
-                data: Object.toparams(sendData),
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-            }).then(
-                function(response)
-                {
-                    if(response.data)
-                    {
-
-                    }
-                   alert("updated: [lead-follow_updateLeadFollow.php" + JSON.stringify(response));
-                },function(result){
-                    alert("Failed");
-            });
-        }
-        alert("task updated");
-};
 
     /*
         method name: saveSection
@@ -136,7 +81,7 @@ $http ({
           $scope.editDuty = true;
 
           //display edit button, hide save/cancel buttons
-          document.getElementById("editButton").style.display = "block";
+          document.getElementById("editButtonDuties").style.display = "block";
           var element1 = document.getElementById("dutySaveCancelButtons");
           if (element1.style.display == 'block') {
               element1.style.display = 'none';
@@ -254,6 +199,82 @@ $http ({
           }
           alert("duty updated");
 
+      }
+      else if(section=="tasks"){
+
+          //make uneditable
+          $scope.editTasks = true;
+
+          //display edit button, hide save/cancel buttons
+          document.getElementById("editButtonTasks").style.display = "block";
+          var element1 = document.getElementById("taskSaveCancelButtons");
+          if (element1.style.display == 'block') {
+              element1.style.display = 'none';
+          }
+
+          //loops for # rows in table
+          for (var j=0; j<$scope.tasks.length; j++)
+          {
+              //copy current row
+              var sendData=angular.copy($scope.tasks[j]);
+              sendData.EventDate+="";//make the whole thing a string
+
+              //Andrew dateArray added here
+              var dateArray=sendData.EventDate.split(" ");//split by space to get rid of time
+              var month;
+              if(dateArray[1]==='Jan')
+                  month="01";
+              else if(dateArray[1]==='Feb')
+                  month="02";
+              else if(dateArray[1]==='Mar')
+                  month="03";
+              else if(dateArray[1]==='Apr')
+                  month="04";
+              else if(dateArray[1]==='May')
+                  month="05";
+              else if(dateArray[1]==='Jun')
+                  month="06";
+              else if(dateArray[1]==='Jul')
+                  month="07";
+              else if(dateArray[1]==='Aug')
+                  month="08";
+              else if(dateArray[1]==='Sep')
+                  month="09";
+              else if(dateArray[1]==='Oct')
+                  month="10";
+              else if(dateArray[1]==='Nov')
+                  month="11";
+              else
+                  month="12";
+
+
+              var dateString=dateArray[3]+'-'+month+'-'+dateArray[2];//off by one YMD
+              //Andrew dateArray change end
+
+              sendData.EventDate=dateString;
+              //delete not needed info
+              delete sendData.Task;
+              delete sendData.TaskNumber;
+
+              //update using updateLeadFollow.php
+              $http ({
+                  method: 'POST',
+                  url: "./php/lead-follow_updateLeadFollow.php",
+                  data: Object.toparams(sendData),
+                  headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+              }).then(
+                  function(response)
+                  {
+                      if(response.data)
+                      {
+
+                      }
+                      alert("updated: [lead-follow_updateLeadFollow.php" + JSON.stringify(response));
+                  },function(result){
+                      alert("Failed");
+                  });
+          }
+          alert("task updated");
       }
     };
 
@@ -438,6 +459,11 @@ $http ({
                     //display new entry
                     $scope.inspections.push(sendData);
 
+                document.getElementById('i1').value = '';
+                document.getElementById('i2').value = '';
+                document.getElementById('i3').checked = false;
+                document.getElementById('i4').value = '';
+                document.getElementById('i5').value = '';
 
                 alert("updated: [lead-follow_createInspections.php" + JSON.stringify(response));
             },function(result){
@@ -494,6 +520,12 @@ $http ({
                     sendData.JBRankID=response.data.id;
                     $scope.rank.push(sendData);
                     //alert("data updated")
+
+                document.getElementById('r1').value = '';
+                document.getElementById('r2').value = '';
+                document.getElementById('r3').value = '';
+                document.getElementById('r4').checked = false;
+
                 alert("updated: [lead-follow_createRanks.php" + JSON.stringify(response));
             },function(result){
                 alert("Failed");
@@ -627,7 +659,7 @@ $http ({
         {
             $scope.duties = angular.copy($scope.backup_duties);                         //RESET DUTIES TO BACKUP
             $scope.editDuty = true;                                                     //non-editable = true
-            document.getElementById("editButton").style.display = "block";
+            document.getElementById("editButtonDuties").style.display = "block";
             var element1 = document.getElementById("dutySaveCancelButtons");
             if (element1.style.display == 'block') {
                 element1.style.display = 'none';
@@ -638,7 +670,15 @@ $http ({
             document.getElementById('4').value = '';
             document.getElementById('5').value = '';
         }
-        //else if(section=="inspections")
+        else if(section=="tasks"){
+            $scope.tasks = angular.copy($scope.backup_tasks);
+            $scope.editTasks = true;
+            document.getElementById("editButtonTasks").style.display = "block";
+            var element1 = document.getElementById("taskSaveCancelButtons");
+            if (element1.style.display == 'block') {
+                element1.style.display = 'none';
+            }
+        }
 
     };
 
