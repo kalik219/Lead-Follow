@@ -7,9 +7,12 @@ Andrew, Anthony, and Kali's changes to Lead-Follow page
 - create duties, inspections works
 - general stylizations
 - fixed update button for duties and inspections
+- cancel buttons now functional (does not just reload)
+- save buttons now functional (performs deletions as well as updates)
+- delete buttons functional (deletes saved)
+- delete button created for inspections
 
 ## TO DO:
-- make delete buttons edit the actual DB
-- edit the Positions and Ranks sections
-- create Delete button for inspections
+- edit the Tasks, Inspections, Positions and Ranks sections
+- all sections except duties needs correct functionality for save, cancel, edit, delete
 - Inspections edit button needs button instead of switch
