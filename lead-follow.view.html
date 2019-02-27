@@ -85,8 +85,18 @@
 <!--load app.controller from leadFollowCtrl.js-->
 <div class="well container infoContainer" id="lfContainer">
     <div ng-controller="leadFollowController">
-        <h3>Tasks</h3>
-
+        <table style="width:100%">
+            <tr>
+                <th style="text-align: left"><h3>Tasks</h3></th>
+                <th style="text-align: right">
+                    <div id="editButtonTasks">
+                        <button class="btn btn-outline-primary" ng-disabled="!editTasks"
+                                ng-click="editSection('tasks')">Edit
+                        </button>
+                    </div>
+                </th>
+            </tr>
+        </table>
         <!--Tasks-->
         <div class="well text-center">
             <form>
@@ -104,14 +114,16 @@
                         <td>{{task.TaskNumber}}</td>
                         <td class="text-left">{{task.Task}}</td>
                         <!--editable fields for cadetClassEvents-->
-                        <td><input id="date" type="date" placeholder="MM/DD/YYYY" ng-model="task.EventDate"></td>
+                        <td><input id="date" type="date" placeholder="MM/DD/YYYY" ng-model="task.EventDate"  ng-disabled="editTasks"></td>
                         <td><input name="DidPass" type="checkbox" ng-true-value="'1'" ng-false-value="'0'"
-                                   ng-model="task.DidPass"></td>
-                        <td><textarea name="EventNote" rows="1" c wrap="off" ng-model="task.EventNote"></textarea></td>
+                                   ng-model="task.DidPass"  ng-disabled="editTasks"></td>
+                        <td><textarea name="EventNote" rows="1" c wrap="off" ng-model="task.EventNote"  ng-disabled="editTasks"></textarea></td>
                     </tr>
                 </table>
-                <button ng-click="update()">Update</button>
-                <button ng-click="cancelUpdate()">Cancel Update</button>
+                <div id="taskSaveCancelButtons">
+                    <button class="btn btn-outline-primary" ng-click="saveSection('tasks')" ng-disabled="editTasks">Save</button>
+                    <button class="btn btn-outline-danger" ng-click="cancelUpdate('tasks')" ng-disabled="editTasks">Cancel</button>
+                </div>
             </form>
         </div>
 
@@ -121,14 +133,11 @@
             <tr>
                 <th style="text-align: left"><h3>Duties</h3></th>
                 <th style="text-align: right">
-                    <div id="editButton">
-                        <button class="btn btn-outline-primary" ng-disabled="!editInfo"
-                                ng-click="editSection2('stopEditButton','updateButtons')">Edit
-                        </button>
-                    </div>
-                    <div id="stopEditButton">
-                        <button class="btn btn-outline-warning" ng-click="stopEditing('stopEditButton','updateButtons')"
-                                ng-disabled="editInfo">Stop Editing
+                    <div id="editButtonDuties">
+                        <button class="btn btn-outline-primary" ng-disabled="!editDuty"
+                                ng-click="editSection('duties')">Edit
+
+
                         </button>
                     </div>
                 </th>
