@@ -16,70 +16,6 @@
     textarea {
         resize: none;
     }
-
-    .switch {
-        position: relative;
-        display: inline-block;
-        width: 60px;
-        height: 34px;
-    }
-
-    .switch input {
-        opacity: 0;
-        width: 0;
-        height: 0;
-    }
-
-    .slider {
-        position: absolute;
-        cursor: pointer;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: #ccc;
-        -webkit-transition: .4s;
-        transition: .4s;
-    }
-
-    .slider:before {
-        position: absolute;
-        content: "";
-        height: 26px;
-        width: 26px;
-        left: 4px;
-        bottom: 4px;
-        background-color: white;
-        -webkit-transition: .4s;
-        transition: .4s;
-    }
-
-    input:checked + .slider {
-        background-color: #2196F3;
-    }
-
-    input:focus + .slider {
-        box-shadow: 0 0 1px #2196F3;
-    }
-
-    input:checked + .slider:before {
-        -webkit-transform: translateX(26px);
-        -ms-transform: translateX(26px);
-        transform: translateX(26px);
-    }
-
-    /* Rounded sliders */
-    .slider.round {
-        border-radius: 34px;
-    }
-
-    .slider.round:before {
-        border-radius: 50%;
-    }
-
-    textarea {
-        resize: none;
-    }
 </style>
 
 <!--load app.controller from leadFollowCtrl.js-->
@@ -126,7 +62,7 @@
                 </div>
             </form>
         </div>
-
+        <hr>
 
         <table style="width:100%">
             <tr>
@@ -208,7 +144,7 @@
             </div>
         </div>
 
-
+        <hr>
         <br>
 
         <table style="width:100%">
@@ -294,14 +230,9 @@
             <tr>
                 <th style="text-align: left"><h3>Positions</h3></th>
                 <th style="text-align: right">
-                    <div id="editPositbtn">
+                    <div id="editButtonPositions">
                         <button class="btn btn-outline-primary" ng-disabled="!editPosit"
-                                ng-click="editPosit = false">Edit
-                        </button>
-                    </div>
-                    <div id="stopEditPositbtn">
-                        <button class="btn btn-outline-warning" ng-click="editPosit = true"
-                                ng-disabled="editPosit">Stop Editing
+                                ng-click="editSection('positions')">Edit
                         </button>
                     </div>
                 </th>
@@ -319,15 +250,15 @@
                                     ng-options="option.JBPosition for option in JBPositionOptions track by option.id"
                                     ng-change="changeJBPosition(posit.JBPosition)"></select></th>
                         <th><label>Start Date: </label>
-                            <input id= "p2" name="PositStartDate" type="date" placeholder="MM/DD/YYYY" ng-disabled="editPosit"
+                            <input id= "p2" name="DutyStartDate" type="date" placeholder="MM/DD/YYYY" ng-disabled="editPosit"
                                    ng-model="posit.PosStartDate"></th>
                         <th><label>End Date: </label>
-                            <input id= "p3" name="PositEndDate" type="date" ng-disabled="editPosit" ng-model="posit.PosEndDate">
+                            <input id= "p3" name="DutyEndDate" type="date" ng-disabled="editPosit" ng-model="posit.PosEndDate">
                         </th>
                         <th><label>Note: </label>
-                            <input id= "p4" name="PositNote" type="text" ng-disabled="editPosit" ng-model="posit.PosNote"></th>
+                            <input id= "p4" name="DutyNote" type="text" ng-disabled="editPosit" ng-model="posit.PosNote"></th>
                         <th><label>Failed: </label>
-                            <input id= "p5" name="PositDidFail: " type="checkbox" ng-disabled="editPosit" ng-true-value="'1'"
+                            <input id= "p5" name="DutyDidFail: " type="checkbox" ng-disabled="editPosit" ng-true-value="'1'"
                                    ng-false-value="'0'" ng-model="posit.PosDidFail"></th>
                         <th><label> </label>
                             <button class="btn btn-success" ng-click="CreatePosit()" ng-disabled="editPosit">Create
@@ -362,10 +293,9 @@
                     </tr>
                 </table>
             </div>
-            <div id="updatePositButtons" ng-if = "!editPosit">
-                <button class="btn btn-outline-primary" ng-click="updatePosit()" ng-disabled="editPosit">Update</button>
-                <button class="btn btn-outline-danger" ng-click="cancelUpdate()" ng-disabled="editPosit">Cancel Update
-                </button>
+            <div id="positionSaveCancelButtons">
+                <button class="btn btn-outline-primary" ng-click="saveSection('positions')" ng-disabled="editPosit">Save</button>
+                <button class="btn btn-outline-danger" ng-click="cancelUpdate('positions')" ng-disabled="editPosit">Cancel</button>
             </div>
         </div>
         <br>

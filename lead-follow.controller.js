@@ -29,7 +29,7 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
     document.getElementById("dutySaveCancelButtons").style.display ="none";
     document.getElementById("taskSaveCancelButtons").style.display ="none";
     document.getElementById("inspectSaveCancelButtons").style.display ="none";
-
+    document.getElementById("positionSaveCancelButtons").style.display ="none";
     document.getElementById("rankSaveCancelButtons").style.display ="none";
 
 
@@ -69,6 +69,15 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
                 element1.style.display = 'block';
             }
 
+        }
+        else if(section=="positions"){
+            $scope.editPosit = false;
+            $scope.backup_positions = angular.copy($scope.pos);
+            document.getElementById("editButtonPositions").style.display = "none";
+            var element1 = document.getElementById("positionSaveCancelButtons");
+            if (element1.style.display == 'none') {
+                element1.style.display = 'block';
+            }
         }
         else if(section=="ranks"){
             $scope.editRank = false;
@@ -395,6 +404,130 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
             alert("inspection updated");
 
         }
+      else if(section=="positions"){
+          //make uneditable
+          $scope.editPosit = true;
+
+          //display edit button, hide save/cancel buttons
+          document.getElementById("editButtonPositions").style.display = "block";
+          var element1 = document.getElementById("positionSaveCancelButtons");
+          if (element1.style.display == 'block') {
+              element1.style.display = 'none';
+          }
+
+          //clears the values in the create position line
+          document.getElementById('p1').value = '';
+          document.getElementById('p2').checked = false;
+          document.getElementById('p3').value = '';
+          document.getElementById('p4').value = '';
+          document.getElementById('p5').value = '';
+
+          //find updated positions
+          for(let i=0; i< $scope.pos.length; i++) {
+              update = angular.copy($scope.pos[i]);              //getting a duty to update all of the changes
+              //let id = $scope.duties[i].DutyPositionID;
+              update.op = "UPDATE";                                 //sets the var 'op' in php file to UPDATE so db is updated
+              updates.push(update);                                 //how to connect updates to php file??? looks at updateMentorCtrl.js
+          }
+          //Find deleted positions
+          for (let i =0; i< $scope.backup_positions.length; i++) {
+              let id = $scope.backup_positions[i].PositionID;
+
+              let found = false;
+              for(let j =0; j< $scope.pos.length; j++) {
+                  if (id == $scope.pos[j].PositionID)
+                      found = true;
+              }
+              if (!found){
+                  update = angular.copy($scope.backup_positions[i]);
+                  update.op = "DELETE";                             //sets the var 'op' in php file to DELETE so duty is deleted
+                  updates.push(update);
+              }
+          }
+
+          //loops for # rows in table
+          //TODO: date not getting sent to DB correctly!
+          for (var j=0; j<updates.length; j++)
+          {
+              //copy current row
+              var sendData=angular.copy(updates[j]);
+              sendData.PosStartDate+="";
+              //Andrew Changes 2/21/19
+              var dateArray=sendData.PosStartDate.split(" ");//split by space to get rid of time
+              var month;
+              if(dateArray[1]==='Jan')
+                  month="01";
+              else if(dateArray[1]==='Feb')
+                  month="02";
+              else if(dateArray[1]==='Mar')
+                  month="03";
+              else if(dateArray[1]==='Apr')
+                  month="04";
+              else if(dateArray[1]==='May')
+                  month="05";
+              else if(dateArray[1]==='Jun')
+                  month="06";
+              else if(dateArray[1]==='Jul')
+                  month="07";
+              else if(dateArray[1]==='Aug')
+                  month="08";
+              else if(dateArray[1]==='Sep')
+                  month="09";
+              else if(dateArray[1]==='Oct')
+                  month="10";
+              else if(dateArray[1]==='Nov')
+                  month="11";
+              else
+                  month="12";
+              var dateString=dateArray[3]+'-'+month+'-'+dateArray[2];//off by one YMD
+
+              sendData.PosEndDate+="";
+              var dateArray=sendData.PosEndDate.split(" ");//split by space to get rid of time
+              var month;
+              if(dateArray[1]==='Jan')
+                  month="01";
+              else if(dateArray[1]==='Feb')
+                  month="02";
+              else if(dateArray[1]==='Mar')
+                  month="03";
+              else if(dateArray[1]==='Apr')
+                  month="04";
+              else if(dateArray[1]==='May')
+                  month="05";
+              else if(dateArray[1]==='Jun')
+                  month="06";
+              else if(dateArray[1]==='Jul')
+                  month="07";
+              else if(dateArray[1]==='Aug')
+                  month="08";
+              else if(dateArray[1]==='Sep')
+                  month="09";
+              else if(dateArray[1]==='Oct')
+                  month="10";
+              else if(dateArray[1]==='Nov')
+                  month="11";
+              else
+                  month="12";
+
+
+              var dateString=dateArray[3]+'-'+month+'-'+dateArray[2];//off by one YMD
+
+              //update using updatePosition.php
+              $http ({
+                  method: 'POST',
+                  url: "./php/lead-follow_updatePosition.php",
+                  data: Object.toparams(sendData),
+                  headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+              }).then(
+                  function(response)
+                  {
+                      alert("updated: [lead-follow_updatePosition.php" + JSON.stringify(response));
+                  },function(result){
+                      alert("Failed");
+                  });
+          }
+          alert("position updated");
+      }
       else if(section=="ranks")
       {
           //make uneditable
@@ -907,6 +1040,20 @@ $http ({
             document.getElementById('4').value = '';
             document.getElementById('5').value = '';
         }
+        else if(section=="positions"){
+            $scope.pos = angular.copy($scope.backup_positions);                          //RESET POSITIONS TO BACKUP
+            $scope.editPosit = true;                                                        //non-editable = true
+            document.getElementById("editButtonPositions").style.display = "block";
+            var element1 = document.getElementById("positionSaveCancelButtons");
+            if (element1.style.display == 'block') {
+                element1.style.display = 'none';
+            }
+            document.getElementById('p1').value = '';
+            document.getElementById('p2').checked = false;
+            document.getElementById('p3').value = '';
+            document.getElementById('p4').value = '';
+            document.getElementById('p5').value = '';
+        }
         else if(section=="ranks")
         {
             $scope.rank = angular.copy($scope.backup_ranks);                 //RESET RANKS TO BACKUP
@@ -937,18 +1084,18 @@ $http ({
         $scope.inspections.splice(index,1);
     };
     /*
-    deletes a position at a certain index
-     */
-    $scope.deletePosit = function(index){
-        $scope.position.splice(index,1);
-    };
-    /*
-    deletes a rank at a certain index
-     */
+      deletes rank at specified index
+    */
     $scope.deleteRank = function(index){
         $scope.rank.splice(index,1);
     };
-    
+    /*
+      deletes position at specified index
+    */
+    $scope.deletePosit = function(index){
+        $scope.pos.splice(index,1);
+    };
+
     //saves selection from DutyPosition dropdown
     $scope.changeJobPosition = function (JobPosition) {
         if (JobPosition != null) {
