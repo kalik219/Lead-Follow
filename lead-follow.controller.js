@@ -187,6 +187,7 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
               var dateString=dateArray[3]+'-'+month+'-'+dateArray[2];//off by one YMD
               sendData.DutyStartDate=dateString;
 
+
               sendData.DutyEndDate+="";
               var dateArray=sendData.DutyEndDate.split(" ");//split by space to get rid of time
               var month;
@@ -387,7 +388,9 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
                 else
                     month="12";
                 var dateString=dateArray[3]+'-'+month+'-'+dateArray[2];//off by one YMD
+
                 sendData.InspectionDate=dateString;
+
 
                 //update using updateInspection.php
                 $http ({
@@ -407,7 +410,6 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
 
         }
         else if(section=="positions"){
-
           //make uneditable
           $scope.editPosit = true;
 
@@ -485,7 +487,6 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
               var dateString=dateArray[3]+'-'+month+'-'+dateArray[2];//off by one YMD
               sendData.PosStartDate=dateString;
 
-
               sendData.PosEndDate+="";
               var dateArray=sendData.PosEndDate.split(" ");//split by space to get rid of time
               var month;
@@ -517,7 +518,6 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
 
               var dateString=dateArray[3]+'-'+month+'-'+dateArray[2];//off by one YMD
               sendData.PosEndDate=dateString;
-
 
               //update using updatePosition.php
               $http ({
@@ -796,6 +796,40 @@ $http ({
         //pull InspectionType from dropdown
         sendData.JBInspectionType=$scope.inspect.JBInspectionType.InspectionType;
 
+
+        //Date display changes
+        sendData.InspectionDate+="";
+        var ogDate = sendData.InspectionDate;
+        var dateArray=sendData.InspectionDate.split(" ");//split by space to get rid of time
+        var month;
+        if(dateArray[1]==='Jan')
+            month="01";
+        else if(dateArray[1]==='Feb')
+            month="02";
+        else if(dateArray[1]==='Mar')
+            month="03";
+        else if(dateArray[1]==='Apr')
+            month="04";
+        else if(dateArray[1]==='May')
+            month="05";
+        else if(dateArray[1]==='Jun')
+            month="06";
+        else if(dateArray[1]==='Jul')
+            month="07";
+        else if(dateArray[1]==='Aug')
+            month="08";
+        else if(dateArray[1]==='Sep')
+            month="09";
+        else if(dateArray[1]==='Oct')
+            month="10";
+        else if(dateArray[1]==='Nov')
+            month="11";
+        else
+            month="12";
+
+        var dateString=dateArray[3]+'-'+month+'-'+dateArray[2]+' 00:00:00';
+        sendData.InspectionDate=dateString;
+        var newDate = new Date(ogDate);
         //alert(JSON.stringify(sendData));
 
         //create inspection entry using createInspections.php
@@ -811,6 +845,7 @@ $http ({
                     //create unique id for new entry
                     sendData.JBInspectionID=response.data.id;
                     //display new entry
+                    sendData.InspectionDate= newDate;
                     $scope.inspections.push(sendData);
 
                 document.getElementById('i1').value = '';
