@@ -58,9 +58,13 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
 
     };
 
-    //Kali changes end here
+    /*
+        method name: saveSection
+        @param: section
 
-
+        purpose: saves and updates the changes to each section. sends the changes to the php file/DB.
+                    a separate method saves the changes when new items are CREATED. this method focuses
+                    on when an item is UPDATED or DELETED.
 
          TODO: get rid of update functions of all other sections & add them into this function!
      */
@@ -273,25 +277,6 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
       }
     };
 
-
-            var dateString=dateArray[3]+'-'+month+'-'+dateArray[2];//off by one YMD
-            //Changes end 2/21/19
-            //update using updateDuty.php
-$http ({
-                method: 'POST',
-                url: "./php/lead-follow_updateDuty.php",
-                data: Object.toparams(sendData),
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-            }).then(
-                function(response)
-                {
-                    alert("updated: [lead-follow_updateDuty.php" + JSON.stringify(response));
-                },function(result){
-                    alert("Failed");
-            });
-        }
-        alert("duty updated");
-};
     
     //update inspection entries
     $scope.updateInspect = function() 
