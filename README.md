@@ -20,8 +20,9 @@ Andrew, Anthony, and Kali's changes to Lead-Follow page
 - all sections except duties needs correct functionality for save, cancel, edit, delete
 - Inspections edit button needs button instead of switch
 - Change Edit/Stop edit button functionality to be like Duties for Inspections, Positions, and Ranks
+- Date functionality added for read-in and update for all sections
 
 ## TO DO:
 
 - Fix table stylization bug for Positions and Ranks causing labels to be on same line as data field
-- dates: all
+- dates, create functions for all sections not storing date in proper format
