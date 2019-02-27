@@ -61,7 +61,6 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
         else if(section=="positions"){
             $scope.editPosit = false;
             $scope.backup_positions = angular.copy($scope.pos);
-
             document.getElementById("editButtonPositions").style.display = "none";
             var element1 = document.getElementById("positionSaveCancelButtons");
             if (element1.style.display == 'none') {
@@ -74,6 +73,7 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
     /*
         method name: saveSection
         @param: section
+
 
         purpose: saves and updates the changes to each section. sends the changes to the php file/DB.
                     a separate method saves the changes when new items are CREATED. this method focuses
@@ -413,6 +413,7 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
           alert("position updated");
       }
     };
+
 
     //update inspection entries
     $scope.updateInspect = function() 
