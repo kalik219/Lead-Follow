@@ -127,6 +127,7 @@
             </form>
         </div>
 
+        <hr/>
 
         <table style="width:100%">
             <tr>
@@ -135,6 +136,8 @@
                     <div id="editButtonDuties">
                         <button class="btn btn-outline-primary" ng-disabled="!editDuty"
                                 ng-click="editSection('duties')">Edit
+
+
                         </button>
                     </div>
                 </th>
@@ -151,22 +154,22 @@
                             <!--dropdown options from tlkpJBDutyPosition-->
                             <select id="1" ng-model="duty.JobPosition" name="JobPosition"
                                     ng-options="option.DutyPosition for option in DutyPositionOptions track by option.id"
-                                    ng-change="changeJobPosition(duty.JobPosition)" ng-disabled="editDuty"></select>
+                                    ng-change="changeJobPosition(duty.JobPosition)" ng-disabled="editInfo"></select>
                         </th>
                         <th><label>Failed: </label>
                             <input id="2" name="DutyDidFail: " type="checkbox" ng-true-value="'1'" ng-false-value="'0'"
-                                   ng-model="duty.DutyDidFail" ng-disabled="editDuty"></th>
+                                   ng-model="duty.DutyDidFail" ng-disabled="editInfo"></th>
                         <th><label>Start Date: </label>
                             <input id="3" name="DutyStartDate" type="date" placeholder="MM/DD/YYYY"
-                                   ng-model="duty.DutyStartDate" ng-disabled="editDuty"></th>
+                                   ng-model="duty.DutyStartDate" ng-disabled="editInfo"></th>
                         <th><label>End Date: </label>
                             <input id="4" name="DutyEndDate" type="date" placeholder="MM/DD/YYYY"
-                                   ng-model="duty.DutyEndDate" ng-disabled="editDuty"></th>
+                                   ng-model="duty.DutyEndDate" ng-disabled="editInfo"></th>
                         <th><label>Note: </label>
-                            <input id="5" name="DutyNote" type="text" ng-model="duty.DutyNote" ng-disabled="editDuty"
+                            <input id="5" name="DutyNote" type="text" ng-model="duty.DutyNote" ng-disabled="editInfo"
                                    style="width:500px"></th>
                         <th><label> </label>
-                            <button class="btn btn-success" ng-click="CreateDuty()" ng-disabled="editDuty">Create
+                            <button class="btn btn-success" ng-click="CreateDuty()" ng-disabled="editInfo">Create
                             </button>
                         </th>
                     </tr>
@@ -187,27 +190,28 @@
                     <tr ng-repeat="duty in duties">
                         <td>{{duty.JobPosition}}</td>
                         <td><input name="DutyDidFail" type="checkbox" ng-true-value="'1'" ng-false-value="'0'"
-                                   ng-model="duty.DutyDidFail" ng-disabled="editDuty"></td>
+                                   ng-model="duty.DutyDidFail" ng-disabled="editInfo"></td>
                         <td><input name="DutyStartDate" type="date" placeholder="MM/DD/YYYY"
-                                   ng-model="duty.DutyStartDate" ng-disabled="editDuty"></td>
+                                   ng-model="duty.DutyStartDate" ng-disabled="editInfo"></td>
                         <td><input name="DutyEndDate" type="date" placeholder="MM/DD/YYYY" ng-model="duty.DutyEndDate"
-                                   ng-disabled="editDuty"></td>
-                        <td><input name="DutyNote" type="text" ng-model="duty.DutyNote" ng-disabled="editDuty"
+                                   ng-disabled="editInfo"></td>
+                        <td><input name="DutyNote" type="text" ng-model="duty.DutyNote" ng-disabled="editInfo"
                                    style="width:500px"></td>
                         <td>
-                            <button id=deleteButton" class="btn btn-danger" ng-disabled="editDuty"
+                            <button id=deleteButton" class="btn btn-danger" ng-disabled="editInfo"
                                     ng-click="deleteDuty($index)">delete
                             </button>
                         </td>
                     </tr>
                 </table>
             </div>
-            <div id="dutySaveCancelButtons"><!--2/26 - changed updateDuty() to saveSection('duties')-->
-                <button class="btn btn-outline-primary" ng-click="saveSection('duties')" ng-disabled="editDuty">Save</button>
-                <button class="btn btn-outline-danger" ng-click="cancelUpdate('duties')" ng-disabled="editDuty">Cancel</button>
+            <div id="updateButtons">
+                <button class="btn btn-outline-primary" ng-click="updateDuty()" ng-disabled="editInfo">Update</button>
+                <button class="btn btn-outline-danger" ng-click="cancelUpdate()" ng-disabled="editInfo">Cancel Update
+                </button>
             </div>
         </div>
-
+        <hr/>
 
         <br>
 
@@ -289,15 +293,11 @@
             </div>
 		</div>
     </span>
-        <div class="well container infoContainer text-center" style="border: 1px solid white">
-            <button ng-click="editMode= false; CreateInspect()">Create</button>
-        </div>
         <hr/>
 
         <br>
         <!--dispalys all inspection instances-->
 
-        <br>
 
         <table style="width:100%">
             <tr>
@@ -345,8 +345,6 @@
                     </tr>
                 </table>
             </form>
-            <button ng-click="CreatePos()">Create</button>
-            <button ng-click="editButton()">Edit</button>
             <!--dispalys all position instances-->
             <div class="well container infoContainer text-center" style="border: 1px solid white">
                 <table width = 100%>
@@ -427,10 +425,6 @@
                     </tr>
                 </table>
             </form>
-
-            <button ng-click="CreateRank()">Create</button>
-            <button ng-click="edit()">Edit</button>            <!-- edit the button-->
-
 
             <!--dispalys all rank instances-->
             <div class="well container infoContainer text-center" style="border: 1px solid white">

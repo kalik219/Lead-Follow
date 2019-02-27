@@ -8,8 +8,9 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
 
     //pre-loaded cadetID
     $scope.cadetID = JSON.parse($window.localStorage.getItem("CadetID"));
-    alert("Test Citizenship with Cadet 361 - Jennifer Avila to see sample dates");
 
+    alert("Test Citizenship with Cadet 361 - Jennifer Avila to see sample dates");
+  
     //array to hold backups of duties, inspections, positions, ranks, tasks
     $scope.backup_tasks = [];
     $scope.backup_duties = [];
@@ -55,17 +56,11 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
                 element1.style.display = 'block';
             }
 
-        }
-
     };
 
-    /*
-        method name: saveSection
-        @param: section
+    //Kali changes end here
 
-        purpose: saves and updates the changes to each section. sends the changes to the php file/DB.
-                    a separate method saves the changes when new items are CREATED. this method focuses
-                    on when an item is UPDATED or DELETED.
+
 
          TODO: get rid of update functions of all other sections & add them into this function!
      */
@@ -278,6 +273,26 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
       }
     };
 
+
+            var dateString=dateArray[3]+'-'+month+'-'+dateArray[2];//off by one YMD
+            //Changes end 2/21/19
+            //update using updateDuty.php
+$http ({
+                method: 'POST',
+                url: "./php/lead-follow_updateDuty.php",
+                data: Object.toparams(sendData),
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+            }).then(
+                function(response)
+                {
+                    alert("updated: [lead-follow_updateDuty.php" + JSON.stringify(response));
+                },function(result){
+                    alert("Failed");
+            });
+        }
+        alert("duty updated");
+};
+    
     //update inspection entries
     $scope.updateInspect = function() 
     {
@@ -286,9 +301,10 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
         {
             //copy current row
             var sendData=angular.copy($scope.inspections[j]);
+            sendData.InspectionDate+="";
 
             //inspec changes 2/21/19
-            var dateArray=sendData.DutyEndDate.split(" ");//split by space to get rid of time
+            var dateArray=sendData.InspectionDate.split(" ");//split by space to get rid of time
             var month;
             if(dateArray[1]==='Jan')
                 month="01";
@@ -334,7 +350,7 @@ $http ({
 };
     
     //update position entries
-    $scope.updatePos = function() 
+    $scope.updatePosit = function()
     {
         //loops for # rows in table
         for (var j=0; j<$scope.pos.length; j++)
@@ -385,13 +401,7 @@ $http ({
         alert("rank updated");
     };
 
-    /*
-        method name: CreateDuty
-        @param: n/a
-
-        purpose: creates a new duty. updates the php file/DB.
-
-     */
+    //create Duty entry
     $scope.CreateDuty = function()
     {
         var sendData=angular.copy($scope.duty);
@@ -418,13 +428,13 @@ $http ({
                     //display new entry
                     $scope.duties.push(sendData);
 
-
-                //clears inputs in the create duty line
+                //Kali changes
                 document.getElementById('1').value = '';
                 document.getElementById('2').checked = false;
                 document.getElementById('3').value = '';
                 document.getElementById('4').value = '';
                 document.getElementById('5').value = '';
+                //Kali changes end
 
                 alert("updated: [lead-follow_createDuty.php" + JSON.stringify(response));
             },function(result){
@@ -472,7 +482,7 @@ $http ({
     };
     
     //create position entry
-    $scope.CreatePos = function() 
+    $scope.CreatePosit = function()
     {
         var sendData=angular.copy($scope.posit);
         
@@ -495,6 +505,7 @@ $http ({
                     sendData.PositionID=response.data.id;
                     //display new entry
                     $scope.pos.push(sendData);
+
                 alert("updated: [lead-follow_createPositions.php" + JSON.stringify(response));
             },function(result){
                 alert("Failed");
@@ -650,6 +661,7 @@ $http ({
 
 
     //refresh page to clear input text fields
+
     /*
     2/25 - changed to be used with all sections
     Duties: reload from partial backup TODO: create partial backup
@@ -682,11 +694,29 @@ $http ({
 
     };
 
-    /*
-    deletes a duty at a certain index
-     */
+/*
+  deletes duty at specified index
+*/
     $scope.deleteDuty = function(index){
-        $scope.duties.splice(index,1);                                  //delete the dutyfrom duties array
+        $scope.duties.splice(index,1);
+    };
+/*
+  deletes inspection at specified index
+*/
+    $scope.deleteInspect = function(index){
+        $scope.inspections.splice(index,1);
+    };
+/*
+  deletes rank at specified index
+*/
+    $scope.deleteRank = function(index){
+        $scope.rank.splice(index,1);
+    };
+/*
+  deletes position at specified index
+*/
+    $scope.deletePosit = function(index){
+        $scope.pos.splice(index,1);
     };
     
     //saves selection from DutyPosition dropdown
