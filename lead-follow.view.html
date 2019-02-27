@@ -16,70 +16,6 @@
     textarea {
         resize: none;
     }
-
-    .switch {
-        position: relative;
-        display: inline-block;
-        width: 60px;
-        height: 34px;
-    }
-
-    .switch input {
-        opacity: 0;
-        width: 0;
-        height: 0;
-    }
-
-    .slider {
-        position: absolute;
-        cursor: pointer;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: #ccc;
-        -webkit-transition: .4s;
-        transition: .4s;
-    }
-
-    .slider:before {
-        position: absolute;
-        content: "";
-        height: 26px;
-        width: 26px;
-        left: 4px;
-        bottom: 4px;
-        background-color: white;
-        -webkit-transition: .4s;
-        transition: .4s;
-    }
-
-    input:checked + .slider {
-        background-color: #2196F3;
-    }
-
-    input:focus + .slider {
-        box-shadow: 0 0 1px #2196F3;
-    }
-
-    input:checked + .slider:before {
-        -webkit-transform: translateX(26px);
-        -ms-transform: translateX(26px);
-        transform: translateX(26px);
-    }
-
-    /* Rounded sliders */
-    .slider.round {
-        border-radius: 34px;
-    }
-
-    .slider.round:before {
-        border-radius: 50%;
-    }
-
-    textarea {
-        resize: none;
-    }
 </style>
 
 <!--load app.controller from leadFollowCtrl.js-->
@@ -126,7 +62,7 @@
                 </div>
             </form>
         </div>
-
+        <hr>
 
         <table style="width:100%">
             <tr>
@@ -208,21 +144,16 @@
             </div>
         </div>
 
-
+        <hr>
         <br>
 
         <table style="width:100%">
             <tr>
                 <th style="text-align: left"><h3>Inspections</h3></th>
                 <th style="text-align: right">
-                    <div id="editInspectbtn">
-                        <button class="btn btn-outline-primary" ng-init= "editInspect = true" ng-disabled="!editInspect"
-                                ng-click="editInspect = false">Edit
-                        </button>
-                    </div>
-                    <div id="stopEditInspectbtn">
-                        <button class="btn btn-outline-warning" ng-click="editInspect = true"
-                                ng-disabled="editInspect">Stop Editing
+                    <div id="editButtonInspections">
+                        <button class="btn btn-outline-primary"   ng-disabled="!editInspect"
+                                ng-click="editSection('inspections')">Edit
                         </button>
                     </div>
                 </th>
@@ -282,16 +213,12 @@
 				</tr>
 			</table>
 
-			<div id="updateInspButtons" ng-if = "!editInspect">
-                <button class="btn btn-outline-primary" ng-click="updateInspect()" ng-disabled="editInspect">Update</button>
-                <button class="btn btn-outline-danger" ng-click="cancelUpdate()" ng-disabled="editInspect">Cancel Update
-                </button>
+			<div id="inspectSaveCancelButtons"><!--2/26 - changed updateInspect() to saveSection('inspection')-->
+                <button class="btn btn-outline-primary" ng-click="saveSection('inspections')" ng-disabled="editInspect">Save</button>
+                <button class="btn btn-outline-danger" ng-click="cancelUpdate('inspections')" ng-disabled="editInspect">Cancel</button>
             </div>
 		</div>
     </span>
-        <div class="well container infoContainer text-center" style="border: 1px solid white">
-            <button ng-click="editMode= false; CreateInspect()">Create</button>
-        </div>
         <hr/>
 
         <br>
@@ -379,14 +306,9 @@
             <tr>
                 <th style="text-align: left"><h3>Ranks</h3></th>
                 <th style="text-align: right">
-                    <div id="editRankbtn">
-                        <button class="btn btn-outline-primary" ng-init= "editRank = true" ng-disabled="!editRank"
-                                ng-click="editRank = false">Edit
-                        </button>
-                    </div>
-                    <div id="stopEditRankbtn">
-                        <button class="btn btn-outline-warning" ng-click="editRank = true"
-                                ng-disabled="editRank">Stop Editing
+                    <div id="editButtonRanks">
+                        <button class="btn btn-outline-primary" ng-disabled="!editRank"
+                                ng-click="editSection('ranks')">Edit
                         </button>
                     </div>
                 </th>
@@ -410,8 +332,8 @@
                             <input id= "r3" name="RankPromotionNote" type="text" ng-disabled="editRank"
                                    ng-model="rEvent.RankPromotionNote"></th>
                         <th><label>Failed: </label>
-                            <input id= "r4" name="RankDidFail: " type="checkbox" ng-disabled="editRank" ng-true-value="1"
-                                   ng-false-value="0" ng-model="rEvent.RankDidFail">
+                            <input id= "r4" name="RankDidFail: " type="checkbox" ng-disabled="editRank" ng-true-value="'1'"
+                                   ng-false-value="'0'" ng-model="rEvent.RankDidFail">
                         <th><label> </label>
                             <button class="btn btn-success" ng-click="CreateRank()" ng-disabled="editRank">Create
                             </button>
@@ -419,9 +341,6 @@
                     </tr>
                 </table>
             </form>
-
-            <button ng-click="CreateRank()">Create</button>
-            <button ng-click="edit()">Edit</button>            <!-- edit the button-->
 
 
             <!--dispalys all rank instances-->
@@ -449,10 +368,9 @@
                     </tr>
                 </table>
             </div>
-            <div id="updateRankButtons" ng-if = "!editRank">
-                <button class="btn btn-outline-primary" ng-click="updateInspect()" ng-disabled="editRank">Update</button>
-                <button class="btn btn-outline-danger" ng-click="cancelUpdate()" ng-disabled="editRank">Cancel Update
-                </button>
+            <div id="rankSaveCancelButtons">
+                <button class="btn btn-outline-primary" ng-click="saveSection('ranks')" ng-disabled="editRank">Save</button>
+                <button class="btn btn-outline-danger" ng-click="cancelUpdate('ranks')" ng-disabled="editRank">Cancel</button>
             </div>
         </div>
         <br>

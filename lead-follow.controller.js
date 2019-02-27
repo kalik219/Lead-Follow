@@ -20,16 +20,17 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
     //automatically disable being able to edit each section (so set to true)
     $scope.editTasks = true;        //must add functionality to html
     $scope.editDuty=true;
-    $scope.editInspections=true;    //must add functionality to html
+    $scope.editInspect=true;    //must add functionality to html
     $scope.editPosit=true;      //must add functionality to html
-    $scope.editRanks=true;          //must add functionality to html
+    $scope.editRank=true;          //must add functionality to html
 
     //automatically hide the duty save/cancel buttons
     //TODO: automatically hide buttons of all other sections
     document.getElementById("dutySaveCancelButtons").style.display ="none";
     document.getElementById("taskSaveCancelButtons").style.display ="none";
+    document.getElementById("inspectSaveCancelButtons").style.display ="none";
     document.getElementById("positionSaveCancelButtons").style.display ="none";
-
+    document.getElementById("rankSaveCancelButtons").style.display ="none";
 
 
     /*
@@ -58,6 +59,17 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
             }
 
         }
+        else if(section=="inspections"){
+            $scope.editInspect = false;
+            $scope.backup_inspections = angular.copy($scope.inspections);
+
+            document.getElementById("editButtonInspections").style.display = "none";
+            var element1 = document.getElementById("inspectSaveCancelButtons");
+            if (element1.style.display == 'none') {
+                element1.style.display = 'block';
+            }
+
+        }
         else if(section=="positions"){
             $scope.editPosit = false;
             $scope.backup_positions = angular.copy($scope.pos);
@@ -67,13 +79,23 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
                 element1.style.display = 'block';
             }
         }
+        else if(section=="ranks"){
+            $scope.editRank = false;
+            $scope.backup_ranks = angular.copy($scope.rank);
+
+            document.getElementById("editButtonRanks").style.display = "none";
+            var element1 = document.getElementById("rankSaveCancelButtons");
+            if (element1.style.display == 'none') {
+                element1.style.display = 'block';
+            }
+
+        }
 
     };
 
     /*
         method name: saveSection
         @param: section
-
 
         purpose: saves and updates the changes to each section. sends the changes to the php file/DB.
                     a separate method saves the changes when new items are CREATED. this method focuses
@@ -288,6 +310,100 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
           }
           alert("task updated");
       }
+        else if(section=="inspections")
+        {
+            //make uneditable
+            $scope.editInspect = true;
+
+            //display edit button, hide save/cancel buttons
+            document.getElementById("editButtonInspections").style.display = "block";
+            var element1 = document.getElementById("inspectSaveCancelButtons");
+            if (element1.style.display == 'block') {
+                element1.style.display = 'none';
+            }
+
+            //clears the values in the create inspection line
+            document.getElementById('i1').value = '';
+            document.getElementById('i2').value = '';
+            document.getElementById('i3').checked = false;
+            document.getElementById('i4').value = '';
+            document.getElementById('i5').value = '';
+
+            //find updated inspections
+            for(let i=0; i< $scope.inspections.length; i++) {
+                update = angular.copy($scope.inspections[i]);              //getting an inspection to update all of the changes
+                //let id = $scope.inspections[i].JBInspectionID;
+                update.op = "UPDATE";                                 //sets the var 'op' in php file to UPDATE so db is updated
+                updates.push(update);                                 //how to connect updates to php file??? looks at updateMentorCtrl.js
+            }
+            //Find deleted inspections
+            for (let i =0; i< $scope.backup_inspections.length; i++) {
+                let id = $scope.backup_inspections[i].JBInspectionID;
+
+                let found = false;
+                for(let j =0; j< $scope.inspections.length; j++) {
+                    if (id == $scope.inspections[j].JBInspectionID)
+                        found = true;
+                }
+                if (!found){
+                    update = angular.copy($scope.backup_inspections[i]);
+                    update.op = "DELETE";                             //sets the var 'op' in php file to DELETE so inspection is deleted
+                    updates.push(update);
+                }
+            }
+
+            //send updates/deletions to php file:
+            for (var j=0; j<updates.length; j++)
+            {
+                //copy current row
+                var sendData=angular.copy(updates[j]);            //instead of duties[j]?
+                sendData.InspectionDate+="";
+                var dateArray=sendData.InspectionDate.split(" ");//split by space to get rid of time
+                var month;
+                if(dateArray[1]==='Jan')
+                    month="01";
+                else if(dateArray[1]==='Feb')
+                    month="02";
+                else if(dateArray[1]==='Mar')
+                    month="03";
+                else if(dateArray[1]==='Apr')
+                    month="04";
+                else if(dateArray[1]==='May')
+                    month="05";
+                else if(dateArray[1]==='Jun')
+                    month="06";
+                else if(dateArray[1]==='Jul')
+                    month="07";
+                else if(dateArray[1]==='Aug')
+                    month="08";
+                else if(dateArray[1]==='Sep')
+                    month="09";
+                else if(dateArray[1]==='Oct')
+                    month="10";
+                else if(dateArray[1]==='Nov')
+                    month="11";
+                else
+                    month="12";
+                var dateString=dateArray[3]+'-'+month+'-'+dateArray[2];//off by one YMD
+
+
+                //update using updateInspection.php
+                $http ({
+                    method: 'POST',
+                    url: "./php/lead-follow_updateInspection.php",
+                    data: Object.toparams(sendData),
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+                }).then(
+                    function(response)
+                    {
+                        alert("updated: [lead-follow_updateInspection.php" + JSON.stringify(response));
+                    },function(result){
+                        alert("Failed");
+                    });
+            }
+            alert("inspection updated");
+
+        }
       else if(section=="positions"){
           //make uneditable
           $scope.editPosit = true;
@@ -412,8 +528,100 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
           }
           alert("position updated");
       }
-    };
+      else if(section=="ranks")
+      {
+          //make uneditable
+          $scope.editRank = true;
 
+          //display edit button, hide save/cancel buttons
+          document.getElementById("editButtonRanks").style.display = "block";
+          var element1 = document.getElementById("rankSaveCancelButtons");
+          if (element1.style.display == 'block') {
+              element1.style.display = 'none';
+          }
+
+          //clears the values in the create rank line
+          document.getElementById('r1').value = '';
+          document.getElementById('r2').value = '';
+          document.getElementById('r3').value = '';
+          document.getElementById('r4').checked = false;
+
+          //find updated ranks
+          for(let i=0; i< $scope.rank.length; i++) {
+              update = angular.copy($scope.rank[i]);              //getting a rank to update all of the changes
+              //let id = $scope.rank[i].JBRankID;
+              update.op = "UPDATE";                                 //sets the var 'op' in php file to UPDATE so db is updated
+              updates.push(update);                                 //how to connect updates to php file??? looks at updateMentorCtrl.js
+          }
+          //Find deleted ranks
+          for (let i =0; i< $scope.backup_ranks.length; i++) {
+              let id = $scope.backup_ranks[i].JBRankID;
+
+              let found = false;
+              for(let j =0; j< $scope.rank.length; j++) {
+                  if (id == $scope.rank[j].JBRankID)
+                      found = true;
+              }
+              if (!found){
+                  update = angular.copy($scope.backup_ranks[i]);
+                  update.op = "DELETE";                             //sets the var 'op' in php file to DELETE so rank is deleted
+                  updates.push(update);
+              }
+          }
+
+          //send updates/deletions to php file:
+          for (var j=0; j<updates.length; j++)
+          {
+              //copy current row
+              var sendData=angular.copy(updates[j]);
+              sendData.RankObtainedDate+="";
+              var dateArray=sendData.RankObtainedDate.split(" ");//split by space to get rid of time
+              var month;
+              if(dateArray[1]==='Jan')
+                  month="01";
+              else if(dateArray[1]==='Feb')
+                  month="02";
+              else if(dateArray[1]==='Mar')
+                  month="03";
+              else if(dateArray[1]==='Apr')
+                  month="04";
+              else if(dateArray[1]==='May')
+                  month="05";
+              else if(dateArray[1]==='Jun')
+                  month="06";
+              else if(dateArray[1]==='Jul')
+                  month="07";
+              else if(dateArray[1]==='Aug')
+                  month="08";
+              else if(dateArray[1]==='Sep')
+                  month="09";
+              else if(dateArray[1]==='Oct')
+                  month="10";
+              else if(dateArray[1]==='Nov')
+                  month="11";
+              else
+                  month="12";
+              var dateString=dateArray[3]+'-'+month+'-'+dateArray[2];//off by one YMD
+
+
+              //update using updateRank.php
+              $http ({
+                  method: 'POST',
+                  url: "./php/lead-follow_updateRank.php",
+                  data: Object.toparams(sendData),
+                  headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+              }).then(
+                  function(response)
+                  {
+                      alert("updated: [lead-follow_updateRank.php" + JSON.stringify(response));
+                  },function(result){
+                      alert("Failed");
+                  });
+          }
+          alert("rank updated");
+
+      }
+    };
 
     //update inspection entries
     $scope.updateInspect = function() 
@@ -423,9 +631,10 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
         {
             //copy current row
             var sendData=angular.copy($scope.inspections[j]);
+            sendData.InspectionDate+="";
 
             //inspec changes 2/21/19
-            var dateArray=sendData.DutyEndDate.split(" ");//split by space to get rid of time
+            var dateArray=sendData.InspectionDate.split(" ");//split by space to get rid of time
             var month;
             if(dateArray[1]==='Jan')
                 month="01";
@@ -469,6 +678,32 @@ $http ({
         }
         alert("inspection updated");
 };
+    
+    //update position entries
+    $scope.updatePosit = function()
+    {
+        //loops for # rows in table
+        for (var j=0; j<$scope.pos.length; j++)
+        {
+            //copy current row
+            var sendData=angular.copy($scope.pos[j]);
+
+            //update using updateDuty.php
+            $http ({
+                method: 'POST',
+                url: "./php/lead-follow_updatePosition.php",
+                data: Object.toparams(sendData),
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+            }).then(
+                function(response)
+                {
+                    alert("updated: [lead-follow_updatePosition.php" + JSON.stringify(response));
+                },function(result){
+                    alert("Failed");
+            });
+        }
+        alert("position updated");
+    };
     
     //update rank entries
     $scope.updateRank = function() 
@@ -790,6 +1025,21 @@ $http ({
                 element1.style.display = 'none';
             }
         }
+        else if(section=="inspections")
+        {
+            $scope.inspections = angular.copy($scope.backup_inspections);                 //RESET INSPECTIONS TO BACKUP
+            $scope.editInspect = true;                                                     //non-editable = true
+            document.getElementById("editButtonInspections").style.display = "block";
+            var element1 = document.getElementById("inspectSaveCancelButtons");
+            if (element1.style.display == 'block') {
+                element1.style.display = 'none';
+            }
+            document.getElementById('1').value = '';
+            document.getElementById('2').value = '';
+            document.getElementById('3').checked = false;
+            document.getElementById('4').value = '';
+            document.getElementById('5').value = '';
+        }
         else if(section=="positions"){
             $scope.pos = angular.copy($scope.backup_positions);                          //RESET POSITIONS TO BACKUP
             $scope.editPosit = true;                                                        //non-editable = true
@@ -804,6 +1054,20 @@ $http ({
             document.getElementById('p4').value = '';
             document.getElementById('p5').value = '';
         }
+        else if(section=="ranks")
+        {
+            $scope.rank = angular.copy($scope.backup_ranks);                 //RESET RANKS TO BACKUP
+            $scope.editRank = true;                                                     //non-editable = true
+            document.getElementById("editButtonRanks").style.display = "block";
+            var element1 = document.getElementById("rankSaveCancelButtons");
+            if (element1.style.display == 'block') {
+                element1.style.display = 'none';
+            }
+            document.getElementById('1').value = '';
+            document.getElementById('2').value = '';
+            document.getElementById('3').value = '';
+            document.getElementById('4').checked = false;
+        }
 
     };
 
@@ -814,8 +1078,8 @@ $http ({
         $scope.duties.splice(index,1);                                  //delete the dutyfrom duties array
     };
     /*
-  deletes inspection at specified index
-*/
+    deletes a inspection at a certain index
+     */
     $scope.deleteInspect = function(index){
         $scope.inspections.splice(index,1);
     };
@@ -831,7 +1095,7 @@ $http ({
     $scope.deletePosit = function(index){
         $scope.pos.splice(index,1);
     };
-    
+
     //saves selection from DutyPosition dropdown
     $scope.changeJobPosition = function (JobPosition) {
         if (JobPosition != null) {
