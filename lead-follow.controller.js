@@ -185,6 +185,7 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
               else
                   month="12";
               var dateString=dateArray[3]+'-'+month+'-'+dateArray[2];//off by one YMD
+              sendData.DutyStartDate=dateString;
 
               sendData.DutyEndDate+="";
               var dateArray=sendData.DutyEndDate.split(" ");//split by space to get rid of time
@@ -216,6 +217,7 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
 
 
               var dateString=dateArray[3]+'-'+month+'-'+dateArray[2];//off by one YMD
+              sendData.DutyEndDate=dateString;
 
               //update using updateDuty.php
               $http ({
@@ -385,7 +387,7 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
                 else
                     month="12";
                 var dateString=dateArray[3]+'-'+month+'-'+dateArray[2];//off by one YMD
-
+                sendData.InspectionDate=dateString;
 
                 //update using updateInspection.php
                 $http ({
@@ -404,7 +406,8 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
             alert("inspection updated");
 
         }
-      else if(section=="positions"){
+        else if(section=="positions"){
+
           //make uneditable
           $scope.editPosit = true;
 
@@ -417,10 +420,10 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
 
           //clears the values in the create position line
           document.getElementById('p1').value = '';
-          document.getElementById('p2').checked = false;
+          document.getElementById('p2').value = '';
           document.getElementById('p3').value = '';
           document.getElementById('p4').value = '';
-          document.getElementById('p5').value = '';
+          document.getElementById('p5').checked = false;
 
           //find updated positions
           for(let i=0; i< $scope.pos.length; i++) {
@@ -480,6 +483,8 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
               else
                   month="12";
               var dateString=dateArray[3]+'-'+month+'-'+dateArray[2];//off by one YMD
+              sendData.PosStartDate=dateString;
+
 
               sendData.PosEndDate+="";
               var dateArray=sendData.PosEndDate.split(" ");//split by space to get rid of time
@@ -511,6 +516,8 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
 
 
               var dateString=dateArray[3]+'-'+month+'-'+dateArray[2];//off by one YMD
+              sendData.PosEndDate=dateString;
+
 
               //update using updatePosition.php
               $http ({
@@ -602,6 +609,7 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
               else
                   month="12";
               var dateString=dateArray[3]+'-'+month+'-'+dateArray[2];//off by one YMD
+              sendData.RankObtainedDate=dateString;
 
 
               //update using updateRank.php
@@ -841,6 +849,13 @@ $http ({
                     sendData.PositionID=response.data.id;
                     //display new entry
                     $scope.pos.push(sendData);
+
+                document.getElementById('p1').value = '';
+                document.getElementById('p2').value = '';
+                document.getElementById('p3').value = '';
+                document.getElementById('p4').value = '';
+                document.getElementById('p5').checked = false;
+
                 alert("updated: [lead-follow_createPositions.php" + JSON.stringify(response));
             },function(result){
                 alert("Failed");
@@ -914,6 +929,7 @@ $http ({
                 $scope.duties[j].DutyStartDate=$scope.duties[j].DutyStartDate.split(" ")[0];
                 $scope.duties[j].DutyStartDate+="T00:00:00";
                 $scope.duties[j].DutyStartDate=new Date($scope.duties[j].DutyStartDate);
+
                 $scope.duties[j].DutyEndDate=$scope.duties[j].DutyEndDate.split(" ")[0];
                 $scope.duties[j].DutyEndtDate+="T00:00:00";
                 $scope.duties[j].DutyEndDate=new Date($scope.duties[j].DutyEndDate);
@@ -928,11 +944,18 @@ $http ({
             for(var l=0; l<$scope.pos.length; l++)
             {
                 $scope.pos[l].PosStartDate=$scope.pos[l].PosStartDate.split(" ")[0];
+                $scope.pos[l].PosStartDate+="T00:00:00";
+                $scope.pos[l].PosStartDate=new Date($scope.pos[l].PosStartDate);
+
                 $scope.pos[l].PosEndDate=$scope.pos[l].PosEndDate.split(" ")[0];
+                $scope.pos[l].PosEndDate+="T00:00:00";
+                $scope.pos[l].PosEndDate=new Date($scope.pos[l].PosEndDate);
             }
             for(var m=0; m<$scope.rank.length; m++)
             {
                 $scope.rank[m].RankObtainedDate=$scope.rank[m].RankObtainedDate.split(" ")[0];
+                $scope.rank[m].RankObtainedDate+="T00:00:00";
+                $scope.rank[m].RankObtainedDate=new Date($scope.rank[m].RankObtainedDate);
             }
             
             //create DutyPosition dropdown
@@ -1049,10 +1072,10 @@ $http ({
                 element1.style.display = 'none';
             }
             document.getElementById('p1').value = '';
-            document.getElementById('p2').checked = false;
+            document.getElementById('p2').value = '';
             document.getElementById('p3').value = '';
             document.getElementById('p4').value = '';
-            document.getElementById('p5').value = '';
+            document.getElementById('p5').checked = false;
         }
         else if(section=="ranks")
         {

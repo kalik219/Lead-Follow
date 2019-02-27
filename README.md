@@ -16,11 +16,13 @@ Andrew, Anthony, and Kali's changes to Lead-Follow page
 - update style for consistency across Duties, Positions, Ranks, and Inspections
 - create button added for Positions and Ranks
 - delete button added for Positions and Ranks
-- Inspections edit button needs button instead of switch
-- added functionality to Position part of page
-- edit the Tasks, Inspections  and Ranks sections
+- edit the Tasks, Inspections, Positions and Ranks sections
 - all sections except duties needs correct functionality for save, cancel, edit, delete
+- Inspections edit button needs button instead of switch
+- Change Edit/Stop edit button functionality to be like Duties for Inspections, Positions, and Ranks
+- Date functionality added for read-in and update for all sections
 
 ## TO DO:
+
 - Fix table stylization bug for Positions and Ranks causing labels to be on same line as data field
-- Dates!
+- dates, create functions for all sections not storing date in proper format

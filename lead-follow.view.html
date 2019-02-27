@@ -250,15 +250,15 @@
                                     ng-options="option.JBPosition for option in JBPositionOptions track by option.id"
                                     ng-change="changeJBPosition(posit.JBPosition)"></select></th>
                         <th><label>Start Date: </label>
-                            <input id= "p2" name="DutyStartDate" type="date" placeholder="MM/DD/YYYY" ng-disabled="editPosit"
+                            <input id= "p2" name="PosStartDate" type="date" placeholder="MM/DD/YYYY" ng-disabled="editPosit"
                                    ng-model="posit.PosStartDate"></th>
                         <th><label>End Date: </label>
-                            <input id= "p3" name="DutyEndDate" type="date" ng-disabled="editPosit" ng-model="posit.PosEndDate">
+                            <input id= "p3" name="PosEndDate" type="date" ng-disabled="editPosit" ng-model="posit.PosEndDate">
                         </th>
                         <th><label>Note: </label>
-                            <input id= "p4" name="DutyNote" type="text" ng-disabled="editPosit" ng-model="posit.PosNote"></th>
+                            <input id= "p4" name="PosNote" type="text" ng-disabled="editPosit" ng-model="posit.PosNote"></th>
                         <th><label>Failed: </label>
-                            <input id= "p5" name="DutyDidFail: " type="checkbox" ng-disabled="editPosit" ng-true-value="'1'"
+                            <input id= "p5" name="PosDidFail: " type="checkbox" ng-disabled="editPosit" ng-true-value="'1'"
                                    ng-false-value="'0'" ng-model="posit.PosDidFail"></th>
                         <th><label> </label>
                             <button class="btn btn-success" ng-click="CreatePosit()" ng-disabled="editPosit">Create
