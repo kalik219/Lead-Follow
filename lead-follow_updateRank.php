@@ -26,7 +26,11 @@ if (isset($_POST['op'])) {
 
 
 if($op=='UPDATE') {
-    $RankObtainedDate = $_POST['RankObtainedDate'];
+
+    $validRankDate = strtotime($_POST['RankObtainedDate']);
+    $validRankDate = date('Y-m-d', $validRankDate);//off by one (gets fixed when retrieving in the js)
+    $RankObtainedDate = $validRankDate;
+
     $RankPromotionNote= $_POST['RankPromotionNote'];
     $RankDidFail= $_POST['RankDidFail'];
 
