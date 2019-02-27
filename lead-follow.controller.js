@@ -631,114 +631,6 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
       }
     };
 
-    //update inspection entries
-    $scope.updateInspect = function() 
-    {
-        //loops for # rows in table
-        for (var j=0; j<$scope.inspections.length; j++)
-        {
-            //copy current row
-            var sendData=angular.copy($scope.inspections[j]);
-            sendData.InspectionDate+="";
-
-            //inspec changes 2/21/19
-            var dateArray=sendData.InspectionDate.split(" ");//split by space to get rid of time
-            var month;
-            if(dateArray[1]==='Jan')
-                month="01";
-            else if(dateArray[1]==='Feb')
-                month="02";
-            else if(dateArray[1]==='Mar')
-                month="03";
-            else if(dateArray[1]==='Apr')
-                month="04";
-            else if(dateArray[1]==='May')
-                month="05";
-            else if(dateArray[1]==='Jun')
-                month="06";
-            else if(dateArray[1]==='Jul')
-                month="07";
-            else if(dateArray[1]==='Aug')
-                month="08";
-            else if(dateArray[1]==='Sep')
-                month="09";
-            else if(dateArray[1]==='Oct')
-                month="10";
-            else if(dateArray[1]==='Nov')
-                month="11";
-            else
-                month="12";
-            var dateString=dateArray[3]+'-'+month+'-'+dateArray[2];//off by one YMD
-            //inspec changes end 2/21/19
-            //update using updateInspection.php
-$http ({
-                method: 'POST',
-                url: "./php/lead-follow_updateInspection.php",
-                data: Object.toparams(sendData),
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-            }).then(
-                function(response)
-                {
-                    alert("updated: [lead-follow_updateInspection.php" + JSON.stringify(response));
-                },function(result){
-                    alert("Failed");
-            });
-        }
-        alert("inspection updated");
-};
-    
-    //update position entries
-    $scope.updatePosit = function()
-    {
-        //loops for # rows in table
-        for (var j=0; j<$scope.pos.length; j++)
-        {
-            //copy current row
-            var sendData=angular.copy($scope.pos[j]);
-
-            //update using updateDuty.php
-            $http ({
-                method: 'POST',
-                url: "./php/lead-follow_updatePosition.php",
-                data: Object.toparams(sendData),
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-            }).then(
-                function(response)
-                {
-                    alert("updated: [lead-follow_updatePosition.php" + JSON.stringify(response));
-                },function(result){
-                    alert("Failed");
-            });
-        }
-        alert("position updated");
-    };
-    
-    //update rank entries
-    $scope.updateRank = function() 
-    {
-        //loops for # rows in table
-        for (var j=0; j<$scope.rank.length; j++)
-        {
-            //copy current row
-            var sendData=angular.copy($scope.rank[j]);
-
-            //update using updateRank.php
-            $http ({
-                method: 'POST',
-                url: "./php/lead-follow_updateRank.php",
-                data: Object.toparams(sendData),
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-            }).then(
-                function(response)
-                {
-                    alert("updated: [lead-follow_updateRank.php" + JSON.stringify(response));
-                },function(result){
-                    alert("Failed");
-            });
-        }
-        alert("rank updated");
-    };
-
     /*
         method name: CreateDuty
         @param: n/a
@@ -755,6 +647,72 @@ $http ({
         //pull JobPosition from dropdown
         sendData.JobPosition=$scope.duty.JobPosition.DutyPosition;
 
+        var ogDateStart = sendData.DutyStartDate;
+        var ogDateEnd = sendData.DutyEndDate;
+
+        sendData.DutyStartDate+="";
+        var dateArray=sendData.DutyStartDate.split(" ");//split by space to get rid of time
+        var month;
+        if(dateArray[1]==='Jan')
+            month="01";
+        else if(dateArray[1]==='Feb')
+            month="02";
+        else if(dateArray[1]==='Mar')
+            month="03";
+        else if(dateArray[1]==='Apr')
+            month="04";
+        else if(dateArray[1]==='May')
+            month="05";
+        else if(dateArray[1]==='Jun')
+            month="06";
+        else if(dateArray[1]==='Jul')
+            month="07";
+        else if(dateArray[1]==='Aug')
+            month="08";
+        else if(dateArray[1]==='Sep')
+            month="09";
+        else if(dateArray[1]==='Oct')
+            month="10";
+        else if(dateArray[1]==='Nov')
+            month="11";
+        else
+            month="12";
+        var dateString=dateArray[3]+'-'+month+'-'+dateArray[2];//off by one YMD
+        var newDateStart = new Date(ogDateStart);
+        sendData.DutyStartDate=dateString;
+
+        sendData.DutyEndDate+="";
+        var dateArray=sendData.DutyEndDate.split(" ");//split by space to get rid of time
+        var month;
+        if(dateArray[1]==='Jan')
+            month="01";
+        else if(dateArray[1]==='Feb')
+            month="02";
+        else if(dateArray[1]==='Mar')
+            month="03";
+        else if(dateArray[1]==='Apr')
+            month="04";
+        else if(dateArray[1]==='May')
+            month="05";
+        else if(dateArray[1]==='Jun')
+            month="06";
+        else if(dateArray[1]==='Jul')
+            month="07";
+        else if(dateArray[1]==='Aug')
+            month="08";
+        else if(dateArray[1]==='Sep')
+            month="09";
+        else if(dateArray[1]==='Oct')
+            month="10";
+        else if(dateArray[1]==='Nov')
+            month="11";
+        else
+            month="12";
+
+
+        var dateString=dateArray[3]+'-'+month+'-'+dateArray[2];//off by one YMD
+        var newDateEnd = new Date(ogDateEnd);
+        sendData.DutyEndDate=dateString;
         //create data entry using createDuty.php
         $http(
             {
@@ -769,6 +727,9 @@ $http ({
                 if(response.data)
                     //give new entry unique id
                     sendData.DutyPositionID=response.data.id;
+
+                    sendData.DutyStartDate= newDateStart;
+                    sendData.DutyEndDate= newDateEnd;
                     //display new entry
                     $scope.duties.push(sendData);
 
@@ -828,8 +789,8 @@ $http ({
             month="12";
 
         var dateString=dateArray[3]+'-'+month+'-'+dateArray[2]+' 00:00:00';
-        sendData.InspectionDate=dateString;
         var newDate = new Date(ogDate);
+        sendData.InspectionDate=dateString;
         //alert(JSON.stringify(sendData));
 
         //create inspection entry using createInspections.php
@@ -870,6 +831,73 @@ $http ({
         //pull JBPosition from dropdown
         sendData.JBPosition=$scope.posit.JBPosition.JBPosition;
 
+        sendData.PosStartDate+="";
+        var ogDateStart = sendData.PosStartDate;
+        var ogDateEnd = sendData.PosEndDate;
+        //Andrew Changes 2/21/19
+        var dateArray=sendData.PosStartDate.split(" ");//split by space to get rid of time
+        var month;
+        if(dateArray[1]==='Jan')
+            month="01";
+        else if(dateArray[1]==='Feb')
+            month="02";
+        else if(dateArray[1]==='Mar')
+            month="03";
+        else if(dateArray[1]==='Apr')
+            month="04";
+        else if(dateArray[1]==='May')
+            month="05";
+        else if(dateArray[1]==='Jun')
+            month="06";
+        else if(dateArray[1]==='Jul')
+            month="07";
+        else if(dateArray[1]==='Aug')
+            month="08";
+        else if(dateArray[1]==='Sep')
+            month="09";
+        else if(dateArray[1]==='Oct')
+            month="10";
+        else if(dateArray[1]==='Nov')
+            month="11";
+        else
+            month="12";
+        var dateString=dateArray[3]+'-'+month+'-'+dateArray[2];//off by one YMD
+        var newDateStart = new Date(ogDateStart);
+        sendData.PosStartDate=dateString;
+
+        sendData.PosEndDate+="";
+        var dateArray=sendData.PosEndDate.split(" ");//split by space to get rid of time
+        var month;
+        if(dateArray[1]==='Jan')
+            month="01";
+        else if(dateArray[1]==='Feb')
+            month="02";
+        else if(dateArray[1]==='Mar')
+            month="03";
+        else if(dateArray[1]==='Apr')
+            month="04";
+        else if(dateArray[1]==='May')
+            month="05";
+        else if(dateArray[1]==='Jun')
+            month="06";
+        else if(dateArray[1]==='Jul')
+            month="07";
+        else if(dateArray[1]==='Aug')
+            month="08";
+        else if(dateArray[1]==='Sep')
+            month="09";
+        else if(dateArray[1]==='Oct')
+            month="10";
+        else if(dateArray[1]==='Nov')
+            month="11";
+        else
+            month="12";
+
+
+        var dateString=dateArray[3]+'-'+month+'-'+dateArray[2];//off by one YMD
+        var newDateEnd = new Date(ogDateEnd);
+        sendData.PosEndDate=dateString;
+
         //create position entry with createPosition.php
         $http ({
             method: 'POST',
@@ -882,6 +910,9 @@ $http ({
                 if(response.data)
                     //create unique id for new entry
                     sendData.PositionID=response.data.id;
+
+                    sendData.PosStartDate= newDateStart;
+                    sendData.PosEndDate= newDateEnd;
                     //display new entry
                     $scope.pos.push(sendData);
 
@@ -904,6 +935,39 @@ $http ({
         sendData.fkClassDetailID = $scope.tasks[0].ClassDetailID;
         sendData.JBRank=$scope.rEvent.JBRank.RankObtained;
 
+        sendData.RankObtainedDate+="";
+        var ogDate = sendData.RankObtainedDate;
+        var dateArray=sendData.RankObtainedDate.split(" ");//split by space to get rid of time
+        var month;
+        if(dateArray[1]==='Jan')
+            month="01";
+        else if(dateArray[1]==='Feb')
+            month="02";
+        else if(dateArray[1]==='Mar')
+            month="03";
+        else if(dateArray[1]==='Apr')
+            month="04";
+        else if(dateArray[1]==='May')
+            month="05";
+        else if(dateArray[1]==='Jun')
+            month="06";
+        else if(dateArray[1]==='Jul')
+            month="07";
+        else if(dateArray[1]==='Aug')
+            month="08";
+        else if(dateArray[1]==='Sep')
+            month="09";
+        else if(dateArray[1]==='Oct')
+            month="10";
+        else if(dateArray[1]==='Nov')
+            month="11";
+        else
+            month="12";
+
+        var dateString=dateArray[3]+'-'+month+'-'+dateArray[2]+' 00:00:00';
+        var newDate = new Date(ogDate);
+        sendData.RankObtainedDate=dateString;
+
         $http ({
             method: 'POST',
             url: "./php/lead-follow_createRanks.php",
@@ -914,6 +978,7 @@ $http ({
             {
                 if(response.data)
                     sendData.JBRankID=response.data.id;
+                    sendData.RankObtainedDate= newDate;
                     $scope.rank.push(sendData);
                     //alert("data updated")
 
@@ -966,7 +1031,7 @@ $http ({
                 $scope.duties[j].DutyStartDate=new Date($scope.duties[j].DutyStartDate);
 
                 $scope.duties[j].DutyEndDate=$scope.duties[j].DutyEndDate.split(" ")[0];
-                $scope.duties[j].DutyEndtDate+="T00:00:00";
+                $scope.duties[j].DutyEndDate+="T00:00:00";
                 $scope.duties[j].DutyEndDate=new Date($scope.duties[j].DutyEndDate);
             }
             for(var k=0; k<$scope.inspections.length; k++)
