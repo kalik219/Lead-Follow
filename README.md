@@ -17,8 +17,9 @@ Andrew, Anthony, and Kali's changes to Lead-Follow page
 - create button added for Positions and Ranks
 - delete button added for Positions and Ranks
 - Inspections edit button needs button instead of switch
+- added functionality to Position part of page
 
 ## TO DO:
-- edit the Tasks, Inspections, Positions and Ranks sections
+- edit the Tasks, Inspections  and Ranks sections
 - all sections except duties needs correct functionality for save, cancel, edit, delete
 - Fix table stylization bug for Positions and Ranks causing labels to be on same line as data field
