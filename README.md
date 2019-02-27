@@ -13,7 +13,7 @@ Andrew, Anthony, and Kali's changes to Lead-Follow page
 - delete button created for inspections
 - Positions and Ranks made properly uneditable
 - edit button added to Positions and Ranks
-- table styles updated for consistency across all tables except Tasks
+- update style for consistency across Duties, Positions, Ranks, and Inspections
 - create button added for Positions and Ranks
 - delete button added for Positions and Ranks
 - edit the Tasks, Inspections, Positions and Ranks sections

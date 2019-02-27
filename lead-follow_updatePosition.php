@@ -24,7 +24,6 @@ if (isset($_POST['op'])) {
 }
 
 //checks to see if updates or deletions need to be made
-
 if($op=='UPDATE') {
 
     $validStart = strtotime($_POST['PosStartDate']);
@@ -35,7 +34,6 @@ if($op=='UPDATE') {
     $validEnd = strtotime($_POST['PosEndDate']);
     $validEnd = date('Y-m-d', $validEnd);//off by one (gets fixed when retrieving in the js)
     $PosEndDate = $validEnd;
-
     $PosNote = $_POST['PosNote'];
     $PosDidFail = $_POST['PosDidFail'];
 

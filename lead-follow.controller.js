@@ -187,7 +187,6 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
               var dateString=dateArray[3]+'-'+month+'-'+dateArray[2];//off by one YMD
               sendData.DutyStartDate=dateString;
 
-
               sendData.DutyEndDate+="";
               var dateArray=sendData.DutyEndDate.split(" ");//split by space to get rid of time
               var month;
@@ -388,9 +387,7 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
                 else
                     month="12";
                 var dateString=dateArray[3]+'-'+month+'-'+dateArray[2];//off by one YMD
-
                 sendData.InspectionDate=dateString;
-
 
                 //update using updateInspection.php
                 $http ({
@@ -410,6 +407,7 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
 
         }
         else if(section=="positions"){
+
           //make uneditable
           $scope.editPosit = true;
 
@@ -487,6 +485,7 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
               var dateString=dateArray[3]+'-'+month+'-'+dateArray[2];//off by one YMD
               sendData.PosStartDate=dateString;
 
+
               sendData.PosEndDate+="";
               var dateArray=sendData.PosEndDate.split(" ");//split by space to get rid of time
               var month;
@@ -518,6 +517,7 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
 
               var dateString=dateArray[3]+'-'+month+'-'+dateArray[2];//off by one YMD
               sendData.PosEndDate=dateString;
+
 
               //update using updatePosition.php
               $http ({
