@@ -18,19 +18,50 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
     $scope.backup_ranks = [];
 
     //automatically disable being able to edit each section (so set to true)
-    $scope.editTasks = true;        //must add functionality to html
+    $scope.editTasks = true;
     $scope.editDuty=true;
-    $scope.editInspect=true;    //must add functionality to html
-    $scope.editPosit=true;      //must add functionality to html
-    $scope.editRank=true;          //must add functionality to html
+    $scope.editInspect=true;
+    $scope.editPosit=true;
+    $scope.editRank=true;
 
-    //automatically hide the duty save/cancel buttons
-    //TODO: automatically hide buttons of all other sections
+    //automatically disable being able to add duty
+    $scope.addDuty=true;
+
+    //automatically hide the save/cancel buttons
     document.getElementById("dutySaveCancelButtons").style.display ="none";
     document.getElementById("taskSaveCancelButtons").style.display ="none";
     document.getElementById("inspectSaveCancelButtons").style.display ="none";
     document.getElementById("positionSaveCancelButtons").style.display ="none";
     document.getElementById("rankSaveCancelButtons").style.display ="none";
+
+    //automatically hide the add info for duty
+    document.getElementById("dutyAdd").style.display="none";
+    document.getElementById("cancelAddDutyButton").style.display = "none";
+
+
+    $scope.addElement = function (section){
+        if(section=="duties"){
+            $scope.addDuty = false;
+            document.getElementById("addDutyButton").style.display="none";
+            document.getElementById("cancelAddDutyButton").style.display = "block";
+            var element1 = document.getElementById("dutyAdd");
+            if (element1.style.display == 'none') {
+                element1.style.display = 'block';
+            }
+        }
+    };
+
+    $scope.cancelAddElement = function (section){
+        if(section=="duties"){
+            $scope.addDuty = true;
+            document.getElementById("addDutyButton").style.display="block";
+            document.getElementById("cancelAddDutyButton").style.display = "none";
+            var element1 = document.getElementById("dutyAdd");
+            if (element1.style.display == 'block') {
+                element1.style.display = 'none';
+            }
+        }
+    }
 
 
     /*
@@ -40,7 +71,9 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
     $scope.editSection = function (section) {
         if(section == "duties") {
             $scope.editDuty = false;
-            $scope.backup_duties = angular.copy($scope.duties);                        //added 2/26 - save backup before updates made?
+            alert("duties array: " + JSON.stringify($scope.duties));
+            $scope.backup_duties = angular.copy($scope.duties);                        //added 2/26 - save backup before updates made
+            alert("backup duties array: " + JSON.stringify($scope.backup_duties));
 
             document.getElementById("editButtonDuties").style.display = "none";
             var element1 = document.getElementById("dutySaveCancelButtons");
@@ -73,6 +106,7 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
         else if(section=="positions"){
             $scope.editPosit = false;
             $scope.backup_positions = angular.copy($scope.pos);
+
             document.getElementById("editButtonPositions").style.display = "none";
             var element1 = document.getElementById("positionSaveCancelButtons");
             if (element1.style.display == 'none') {
@@ -156,6 +190,7 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
           {
               //copy current row
               var sendData=angular.copy(updates[j]);            //instead of duties[j]?
+
               sendData.DutyStartDate+="";
               //Andrew Changes 2/21/19
               var dateArray=sendData.DutyStartDate.split(" ");//split by space to get rid of time
@@ -186,7 +221,6 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
                   month="12";
               var dateString=dateArray[3]+'-'+month+'-'+dateArray[2];//off by one YMD
               sendData.DutyStartDate=dateString;
-
 
               sendData.DutyEndDate+="";
               var dateArray=sendData.DutyEndDate.split(" ");//split by space to get rid of time
@@ -410,6 +444,7 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
 
         }
         else if(section=="positions"){
+
           //make uneditable
           $scope.editPosit = true;
 
@@ -487,6 +522,7 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
               var dateString=dateArray[3]+'-'+month+'-'+dateArray[2];//off by one YMD
               sendData.PosStartDate=dateString;
 
+
               sendData.PosEndDate+="";
               var dateArray=sendData.PosEndDate.split(" ");//split by space to get rid of time
               var month;
@@ -518,6 +554,7 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
 
               var dateString=dateArray[3]+'-'+month+'-'+dateArray[2];//off by one YMD
               sendData.PosEndDate=dateString;
+
 
               //update using updatePosition.php
               $http ({
@@ -641,7 +678,7 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
     $scope.CreateDuty = function()
     {
         var sendData=angular.copy($scope.duty);
-        
+
         //pull ClassDetailID from tasks
         sendData.fkClassDetailID = $scope.tasks[0].ClassDetailID;
         //pull JobPosition from dropdown
@@ -713,6 +750,7 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
         var dateString=dateArray[3]+'-'+month+'-'+dateArray[2];//off by one YMD
         var newDateEnd = new Date(ogDateEnd);
         sendData.DutyEndDate=dateString;
+
         //create data entry using createDuty.php
         $http(
             {
@@ -726,12 +764,14 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
             {
                 if(response.data)
                     //give new entry unique id
-                    sendData.DutyPositionID=response.data.id;
+                    sendData.DutyPositionID=response.data.id;       //this is undefined!!!!! TODO: fix this!!!!!
 
                     sendData.DutyStartDate= newDateStart;
                     sendData.DutyEndDate= newDateEnd;
                     //display new entry
-                    $scope.duties.push(sendData);
+                    $scope.duties.push(sendData);       //adding new duty to the end of the duties array
+
+                // $scope.backup_duties = angular.copy($scope.duties);                        //added 2/26 - save backup before updates made
 
 
                 //clears inputs in the create duty line
@@ -740,8 +780,13 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
                 document.getElementById('3').value = '';
                 document.getElementById('4').value = '';
                 document.getElementById('5').value = '';
+                document.getElementById("dutyAdd").style.display="none";
+                document.getElementById("addDutyButton").style.display="block";
+
 
                 alert("updated: [lead-follow_createDuty.php" + JSON.stringify(response));
+                alert("duties array: " + JSON.stringify($scope.duties));
+                alert("response id: " + JSON.stringify(response.data.id));
             },function(result){
                     alert("Failed");
         });
@@ -808,6 +853,8 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
                     //display new entry
                     sendData.InspectionDate= newDate;
                     $scope.inspections.push(sendData);
+                    //$scope.backup_inspections = angular.copy($scope.inspections);                  //added 2/28 - save backup with new inspection
+
 
                 document.getElementById('i1').value = '';
                 document.getElementById('i2').value = '';
@@ -916,6 +963,9 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
                     //display new entry
                     $scope.pos.push(sendData);
 
+                    //$scope.backup_positions = angular.copy($scope.pos);                        //added 2/28 - save backup with new position
+
+
                 document.getElementById('p1').value = '';
                 document.getElementById('p2').value = '';
                 document.getElementById('p3').value = '';
@@ -981,6 +1031,8 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
                     sendData.RankObtainedDate= newDate;
                     $scope.rank.push(sendData);
                     //alert("data updated")
+                   // $scope.backup_ranks = angular.copy($scope.rank);                        //added 2/28 - save backup with new rank
+
 
                 document.getElementById('r1').value = '';
                 document.getElementById('r2').value = '';
@@ -1201,8 +1253,8 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
         $scope.duties.splice(index,1);                                  //delete the dutyfrom duties array
     };
     /*
-    deletes a inspection at a certain index
-     */
+  deletes inspection at specified index
+*/
     $scope.deleteInspect = function(index){
         $scope.inspections.splice(index,1);
     };
@@ -1218,7 +1270,7 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
     $scope.deletePosit = function(index){
         $scope.pos.splice(index,1);
     };
-
+    
     //saves selection from DutyPosition dropdown
     $scope.changeJobPosition = function (JobPosition) {
         if (JobPosition != null) {

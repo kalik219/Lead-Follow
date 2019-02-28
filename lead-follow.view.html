@@ -16,6 +16,70 @@
     textarea {
         resize: none;
     }
+
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 34px;
+    }
+
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 26px;
+        width: 26px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+
+    input:checked + .slider {
+        background-color: #2196F3;
+    }
+
+    input:focus + .slider {
+        box-shadow: 0 0 1px #2196F3;
+    }
+
+    input:checked + .slider:before {
+        -webkit-transform: translateX(26px);
+        -ms-transform: translateX(26px);
+        transform: translateX(26px);
+    }
+
+    /* Rounded sliders */
+    .slider.round {
+        border-radius: 34px;
+    }
+
+    .slider.round:before {
+        border-radius: 50%;
+    }
+
+    textarea {
+        resize: none;
+    }
 </style>
 
 <!--load app.controller from leadFollowCtrl.js-->
@@ -62,7 +126,7 @@
                 </div>
             </form>
         </div>
-        <hr>
+
 
         <table style="width:100%">
             <tr>
@@ -79,37 +143,9 @@
         <!--Duties-->
         <div class="well container infoContainer text-center" style="border: 1px solid white">
             <!--creates new duty entry-->
-            <h6 style="text-align: left;">Add Duty</h6>
-            <form>
-                <table>
-                    <tr>
-                        <th><label>Duties: </label>
-                            <!--dropdown options from tlkpJBDutyPosition-->
-                            <select id="1" ng-model="duty.JobPosition" name="JobPosition"
-                                    ng-options="option.DutyPosition for option in DutyPositionOptions track by option.id"
-                                    ng-change="changeJobPosition(duty.JobPosition)" ng-disabled="editDuty"></select>
-                        </th>
-                        <th><label>Failed: </label>
-                            <input id="2" name="DutyDidFail: " type="checkbox" ng-true-value="'1'" ng-false-value="'0'"
-                                   ng-model="duty.DutyDidFail" ng-disabled="editDuty"></th>
-                        <th><label>Start Date: </label>
-                            <input id="3" name="DutyStartDate" type="date" placeholder="MM/DD/YYYY"
-                                   ng-model="duty.DutyStartDate" ng-disabled="editDuty"></th>
-                        <th><label>End Date: </label>
-                            <input id="4" name="DutyEndDate" type="date" placeholder="MM/DD/YYYY"
-                                   ng-model="duty.DutyEndDate" ng-disabled="editDuty"></th>
-                        <th><label>Note: </label>
-                            <input id="5" name="DutyNote" type="text" ng-model="duty.DutyNote" ng-disabled="editDuty"
-                                   style="width:500px"></th>
-                        <th><label> </label>
-                            <button class="btn btn-success" ng-click="CreateDuty()" ng-disabled="editDuty">Create
-                            </button>
-                        </th>
-                    </tr>
-                </table>
-            </form>
+            <!--<h6 style="text-align: left;">Add Duty</h6>-->
+
             <br>
-            <h6 style="text-align: left;">Current Duties</h6>
             <!--displays all duty instances-->
             <div class="well container infoContainer text-center" style="border: 1px solid white">
                 <table>
@@ -138,13 +174,42 @@
                     </tr>
                 </table>
             </div>
+            <button id="addDutyButton" class="btn btn-link" ng-click="addElement('duties')" style="margin: 0 auto">+Add Duty</button>
+            <form id="dutyAdd">
+                <table>
+                    <tr>
+                        <th><label>Duties: </label>
+                            <!--dropdown options from tlkpJBDutyPosition-->
+                            <select id="1" ng-model="duty.JobPosition" name="JobPosition"
+                                    ng-options="option.DutyPosition for option in DutyPositionOptions track by option.id"
+                                    ng-change="changeJobPosition(duty.JobPosition)" ng-disabled="addDuty"></select>
+                        </th>
+                        <th><label>Failed: </label>
+                            <input id="2" name="DutyDidFail: " type="checkbox" ng-true-value="'1'" ng-false-value="'0'"
+                                   ng-model="duty.DutyDidFail" ng-disabled="addDuty"></th>
+                        <th><label>Start Date: </label>
+                            <input id="3" name="DutyStartDate" type="date" placeholder="MM/DD/YYYY"
+                                   ng-model="duty.DutyStartDate" ng-disabled="addDuty"></th>
+                        <th><label>End Date: </label>
+                            <input id="4" name="DutyEndDate" type="date" placeholder="MM/DD/YYYY"
+                                   ng-model="duty.DutyEndDate" ng-disabled="addDuty"></th>
+                        <th><label>Note: </label>
+                            <input id="5" name="DutyNote" type="text" ng-model="duty.DutyNote" ng-disabled="addDuty"
+                                   style="width:500px"></th>
+                        <th><label> </label>
+                            <button class="btn btn-success" ng-click="CreateDuty()" ng-disabled="addDuty">Create
+                            </button>
+                        </th>
+                    </tr>
+                </table>
+            </form>
+            <button id="cancelAddDutyButton" class="btn btn-outline-danger" ng-click="cancelAddElement('duties')" style="margin: 0 auto">Cancel</button>
             <div id="dutySaveCancelButtons"><!--2/26 - changed updateDuty() to saveSection('duties')-->
                 <button class="btn btn-outline-primary" ng-click="saveSection('duties')" ng-disabled="editDuty">Save</button>
                 <button class="btn btn-outline-danger" ng-click="cancelUpdate('duties')" ng-disabled="editDuty">Cancel</button>
             </div>
         </div>
 
-        <hr>
         <br>
 
         <table style="width:100%">
@@ -219,6 +284,9 @@
             </div>
 		</div>
     </span>
+        <div class="well container infoContainer text-center" style="border: 1px solid white">
+            <button ng-click="editMode= false; CreateInspect()">Create</button>
+        </div>
         <hr/>
 
         <br>
@@ -318,7 +386,7 @@
         <div class="well container infoContainer text-center" style="border: 1px solid white">
             <!--creates new rank entry-->
             <form>
-                <table>
+                <table style="width:100%">
                     <tr>
                         <th><label>Rank: </label>
                             <!--dropdown options from tlkpJBRank-->
@@ -345,7 +413,7 @@
 
             <!--dispalys all rank instances-->
             <div class="well container infoContainer text-center" style="border: 1px solid white">
-                <table width = 100%>
+                <table style="width:100%">
                     <tr>
                         <th>Rank</th>
                         <th>Date Obtained</th>
