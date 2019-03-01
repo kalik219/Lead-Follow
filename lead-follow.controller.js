@@ -26,6 +26,9 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
 
     //automatically disable being able to add duty
     $scope.addDuty=true;
+    $scope.addInspect=true;
+    $scope.addPosit=true;
+    $scope.addRank=true;
 
     //automatically hide the save/cancel buttons
     document.getElementById("dutySaveCancelButtons").style.display ="none";
@@ -37,6 +40,12 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
     //automatically hide the add info for duty
     document.getElementById("dutyAdd").style.display="none";
     document.getElementById("cancelAddDutyButton").style.display = "none";
+    document.getElementById("inspectAdd").style.display="none";
+    document.getElementById("cancelAddInspectButton").style.display = "none";
+    document.getElementById("positAdd").style.display="none";
+    document.getElementById("cancelAddPositButton").style.display = "none";
+    document.getElementById("rankAdd").style.display="none";
+    document.getElementById("cancelAddRankButton").style.display = "none";
 
 
     $scope.addElement = function (section){
@@ -45,6 +54,33 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
             document.getElementById("addDutyButton").style.display="none";
             document.getElementById("cancelAddDutyButton").style.display = "block";
             var element1 = document.getElementById("dutyAdd");
+            if (element1.style.display == 'none') {
+                element1.style.display = 'block';
+            }
+        }
+        else if(section=="inspections"){
+            $scope.addInspect = false;
+            document.getElementById("addInspectButton").style.display="none";
+            document.getElementById("cancelAddInspectButton").style.display = "block";
+            var element1 = document.getElementById("inspectAdd");
+            if (element1.style.display == 'none') {
+                element1.style.display = 'block';
+            }
+        }
+        else if(section=="positions"){
+            $scope.addPosit = false;
+            document.getElementById("addPositButton").style.display="none";
+            document.getElementById("cancelAddPositButton").style.display = "block";
+            var element1 = document.getElementById("positAdd");
+            if (element1.style.display == 'none') {
+                element1.style.display = 'block';
+            }
+        }
+        else if(section=="ranks"){
+            $scope.addRank = false;
+            document.getElementById("addRankButton").style.display="none";
+            document.getElementById("cancelAddRankButton").style.display = "block";
+            var element1 = document.getElementById("rankAdd");
             if (element1.style.display == 'none') {
                 element1.style.display = 'block';
             }
@@ -61,6 +97,33 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
                 element1.style.display = 'none';
             }
         }
+        else if(section=="inspections"){
+            $scope.addInspect = true;
+            document.getElementById("addInspectButton").style.display="block";
+            document.getElementById("cancelAddInspectButton").style.display = "none";
+            var element1 = document.getElementById("inspectAdd");
+            if (element1.style.display == 'block') {
+                element1.style.display = 'none';
+            }
+        }
+        else if(section=="positions"){
+            $scope.addPosit = true;
+            document.getElementById("addPositButton").style.display="block";
+            document.getElementById("cancelAddPositButton").style.display = "none";
+            var element1 = document.getElementById("positAdd");
+            if (element1.style.display == 'block') {
+                element1.style.display = 'none';
+            }
+        }
+        else if(section=="ranks"){
+            $scope.addRank = true;
+            document.getElementById("addRankButton").style.display="block";
+            document.getElementById("cancelAddRankButton").style.display = "none";
+            var element1 = document.getElementById("rankAdd");
+            if (element1.style.display == 'block') {
+                element1.style.display = 'none';
+            }
+        }
     }
 
 
@@ -71,9 +134,7 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
     $scope.editSection = function (section) {
         if(section == "duties") {
             $scope.editDuty = false;
-            alert("duties array: " + JSON.stringify($scope.duties));
             $scope.backup_duties = angular.copy($scope.duties);                        //added 2/26 - save backup before updates made
-            alert("backup duties array: " + JSON.stringify($scope.backup_duties));
 
             document.getElementById("editButtonDuties").style.display = "none";
             var element1 = document.getElementById("dutySaveCancelButtons");
@@ -764,7 +825,7 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
             {
                 if(response.data)
                     //give new entry unique id
-                    sendData.DutyPositionID=response.data.id;       //this is undefined!!!!! TODO: fix this!!!!!
+                    sendData.DutyPositionID=response.data.id;
 
                     sendData.DutyStartDate= newDateStart;
                     sendData.DutyEndDate= newDateEnd;
@@ -861,6 +922,8 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
                 document.getElementById('i3').checked = false;
                 document.getElementById('i4').value = '';
                 document.getElementById('i5').value = '';
+                document.getElementById("inspectAdd").style.display="none";
+                document.getElementById("addInspectButton").style.display="block";
 
                 alert("updated: [lead-follow_createInspections.php" + JSON.stringify(response));
             },function(result){
@@ -971,6 +1034,8 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
                 document.getElementById('p3').value = '';
                 document.getElementById('p4').value = '';
                 document.getElementById('p5').checked = false;
+                document.getElementById("positAdd").style.display="none";
+                document.getElementById("addPositButton").style.display="block";
 
                 alert("updated: [lead-follow_createPositions.php" + JSON.stringify(response));
             },function(result){
@@ -1038,6 +1103,8 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
                 document.getElementById('r2').value = '';
                 document.getElementById('r3').value = '';
                 document.getElementById('r4').checked = false;
+                document.getElementById("rankAdd").style.display="none";
+                document.getElementById("addRankButton").style.display="block";
 
                 alert("updated: [lead-follow_createRanks.php" + JSON.stringify(response));
             },function(result){
@@ -1253,8 +1320,8 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
         $scope.duties.splice(index,1);                                  //delete the dutyfrom duties array
     };
     /*
-  deletes inspection at specified index
-*/
+    deletes a inspection at a certain index
+     */
     $scope.deleteInspect = function(index){
         $scope.inspections.splice(index,1);
     };
@@ -1270,7 +1337,7 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
     $scope.deletePosit = function(index){
         $scope.pos.splice(index,1);
     };
-    
+
     //saves selection from DutyPosition dropdown
     $scope.changeJobPosition = function (JobPosition) {
         if (JobPosition != null) {
