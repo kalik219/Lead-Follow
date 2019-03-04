@@ -42,19 +42,113 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
     $scope.backup_ranks = [];
 
     //automatically disable being able to edit each section (so set to true)
-    $scope.editTasks = true;        //must add functionality to html
+    $scope.editTasks = true;
     $scope.editDuty=true;
-    $scope.editInspect=true;    //must add functionality to html
-    $scope.editPosit=true;      //must add functionality to html
-    $scope.editRank=true;          //must add functionality to html
+    $scope.editInspect=true;
+    $scope.editPosit=true;
+    $scope.editRank=true;
 
-    //automatically hide the duty save/cancel buttons
-    //TODO: automatically hide buttons of all other sections
+    //automatically disable being able to add duty
+    $scope.addDuty=true;
+    $scope.addInspect=true;
+    $scope.addPosit=true;
+    $scope.addRank=true;
+
+    //automatically hide the save/cancel buttons
     document.getElementById("dutySaveCancelButtons").style.display ="none";
     document.getElementById("taskSaveCancelButtons").style.display ="none";
     document.getElementById("inspectSaveCancelButtons").style.display ="none";
     document.getElementById("positionSaveCancelButtons").style.display ="none";
     document.getElementById("rankSaveCancelButtons").style.display ="none";
+
+    //automatically hide the add info for duty
+    document.getElementById("dutyAdd").style.display="none";
+    document.getElementById("cancelAddDutyButton").style.display = "none";
+    document.getElementById("inspectAdd").style.display="none";
+    document.getElementById("cancelAddInspectButton").style.display = "none";
+    document.getElementById("positAdd").style.display="none";
+    document.getElementById("cancelAddPositButton").style.display = "none";
+    document.getElementById("rankAdd").style.display="none";
+    document.getElementById("cancelAddRankButton").style.display = "none";
+
+
+    $scope.addElement = function (section){
+        if(section=="duties"){
+            $scope.addDuty = false;
+            document.getElementById("addDutyButton").style.display="none";
+            document.getElementById("cancelAddDutyButton").style.display = "block";
+            var element1 = document.getElementById("dutyAdd");
+            if (element1.style.display == 'none') {
+                element1.style.display = 'block';
+            }
+        }
+        else if(section=="inspections"){
+            $scope.addInspect = false;
+            document.getElementById("addInspectButton").style.display="none";
+            document.getElementById("cancelAddInspectButton").style.display = "block";
+            var element1 = document.getElementById("inspectAdd");
+            if (element1.style.display == 'none') {
+                element1.style.display = 'block';
+            }
+        }
+        else if(section=="positions"){
+            $scope.addPosit = false;
+            document.getElementById("addPositButton").style.display="none";
+            document.getElementById("cancelAddPositButton").style.display = "block";
+            var element1 = document.getElementById("positAdd");
+            if (element1.style.display == 'none') {
+                element1.style.display = 'block';
+            }
+        }
+        else if(section=="ranks"){
+            $scope.addRank = false;
+            document.getElementById("addRankButton").style.display="none";
+            document.getElementById("cancelAddRankButton").style.display = "block";
+            var element1 = document.getElementById("rankAdd");
+            if (element1.style.display == 'none') {
+                element1.style.display = 'block';
+            }
+        }
+    };
+
+    $scope.cancelAddElement = function (section){
+        if(section=="duties"){
+            $scope.addDuty = true;
+            document.getElementById("addDutyButton").style.display="block";
+            document.getElementById("cancelAddDutyButton").style.display = "none";
+            var element1 = document.getElementById("dutyAdd");
+            if (element1.style.display == 'block') {
+                element1.style.display = 'none';
+            }
+        }
+        else if(section=="inspections"){
+            $scope.addInspect = true;
+            document.getElementById("addInspectButton").style.display="block";
+            document.getElementById("cancelAddInspectButton").style.display = "none";
+            var element1 = document.getElementById("inspectAdd");
+            if (element1.style.display == 'block') {
+                element1.style.display = 'none';
+            }
+        }
+        else if(section=="positions"){
+            $scope.addPosit = true;
+            document.getElementById("addPositButton").style.display="block";
+            document.getElementById("cancelAddPositButton").style.display = "none";
+            var element1 = document.getElementById("positAdd");
+            if (element1.style.display == 'block') {
+                element1.style.display = 'none';
+            }
+        }
+        else if(section=="ranks"){
+            $scope.addRank = true;
+            document.getElementById("addRankButton").style.display="block";
+            document.getElementById("cancelAddRankButton").style.display = "none";
+            var element1 = document.getElementById("rankAdd");
+            if (element1.style.display == 'block') {
+                element1.style.display = 'none';
+            }
+        }
+    }
 
 
     /*
@@ -62,10 +156,9 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
     TODO: add other sections (inspections, tasks, ranks, positions)
      */
     $scope.editSection = function (section) {
-
         if(section == "duties") {
             $scope.editDuty = false;
-            $scope.backup_duties = angular.copy($scope.duties);                        //added 2/26 - save backup before updates made?
+            $scope.backup_duties = angular.copy($scope.duties);                        //added 2/26 - save backup before updates made
 
             document.getElementById("editButtonDuties").style.display = "none";
             var element1 = document.getElementById("dutySaveCancelButtons");
@@ -98,6 +191,7 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
         else if(section=="positions"){
             $scope.editPosit = false;
             $scope.backup_positions = angular.copy($scope.pos);
+
             document.getElementById("editButtonPositions").style.display = "none";
             var element1 = document.getElementById("positionSaveCancelButtons");
             if (element1.style.display == 'none') {
@@ -179,6 +273,7 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
             {
                 //copy current row
                 var sendData=angular.copy(updates[j]);            //instead of duties[j]?
+
                 sendData.DutyStartDate+="";
                 //Andrew Changes 2/21/19
                 var dateArray=sendData.DutyStartDate.split(" ");//split by space to get rid of time
@@ -410,7 +505,9 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
                 else
                     month="12";
                 var dateString=dateArray[3]+'-'+month+'-'+dateArray[2];//off by one YMD
+
                 sendData.InspectionDate=dateString;
+
 
                 //update using updateInspection.php
                 $http ({
@@ -654,114 +751,6 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
         }
     };
 
-    //update inspection entries
-    $scope.updateInspect = function()
-    {
-        //loops for # rows in table
-        for (var j=0; j<$scope.inspections.length; j++)
-        {
-            //copy current row
-            var sendData=angular.copy($scope.inspections[j]);
-            sendData.InspectionDate+="";
-
-            //inspec changes 2/21/19
-            var dateArray=sendData.InspectionDate.split(" ");//split by space to get rid of time
-            var month;
-            if(dateArray[1]==='Jan')
-                month="01";
-            else if(dateArray[1]==='Feb')
-                month="02";
-            else if(dateArray[1]==='Mar')
-                month="03";
-            else if(dateArray[1]==='Apr')
-                month="04";
-            else if(dateArray[1]==='May')
-                month="05";
-            else if(dateArray[1]==='Jun')
-                month="06";
-            else if(dateArray[1]==='Jul')
-                month="07";
-            else if(dateArray[1]==='Aug')
-                month="08";
-            else if(dateArray[1]==='Sep')
-                month="09";
-            else if(dateArray[1]==='Oct')
-                month="10";
-            else if(dateArray[1]==='Nov')
-                month="11";
-            else
-                month="12";
-            var dateString=dateArray[3]+'-'+month+'-'+dateArray[2];//off by one YMD
-            //inspec changes end 2/21/19
-            //update using updateInspection.php
-            $http ({
-                method: 'POST',
-                url: "./php/lead-follow_updateInspection.php",
-                data: Object.toparams(sendData),
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-            }).then(
-                function(response)
-                {
-                    alert("updated: [lead-follow_updateInspection.php" + JSON.stringify(response));
-                },function(result){
-                    alert("Failed");
-                });
-        }
-        alert("inspection updated");
-    };
-
-    //update position entries
-    $scope.updatePosit = function()
-    {
-        //loops for # rows in table
-        for (var j=0; j<$scope.pos.length; j++)
-        {
-            //copy current row
-            var sendData=angular.copy($scope.pos[j]);
-
-            //update using updateDuty.php
-            $http ({
-                method: 'POST',
-                url: "./php/lead-follow_updatePosition.php",
-                data: Object.toparams(sendData),
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-            }).then(
-                function(response)
-                {
-                    alert("updated: [lead-follow_updatePosition.php" + JSON.stringify(response));
-                },function(result){
-                    alert("Failed");
-                });
-        }
-        alert("position updated");
-    };
-
-    //update rank entries
-    $scope.updateRank = function()
-    {
-        //loops for # rows in table
-        for (var j=0; j<$scope.rank.length; j++)
-        {
-            //copy current row
-            var sendData=angular.copy($scope.rank[j]);
-
-            //update using updateRank.php
-            $http ({
-                method: 'POST',
-                url: "./php/lead-follow_updateRank.php",
-                data: Object.toparams(sendData),
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-            }).then(
-                function(response)
-                {
-                    alert("updated: [lead-follow_updateRank.php" + JSON.stringify(response));
-                },function(result){
-                    alert("Failed");
-                });
-        }
-        alert("rank updated");
-    };
-
     /*
         method name: CreateDuty
         @param: n/a
@@ -776,6 +765,73 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
         //pull JobPosition from dropdown
         sendData.JobPosition=$scope.duty.JobPosition.DutyPosition;
 
+        var ogDateStart = sendData.DutyStartDate;
+        var ogDateEnd = sendData.DutyEndDate;
+
+        sendData.DutyStartDate+="";
+        var dateArray=sendData.DutyStartDate.split(" ");//split by space to get rid of time
+        var month;
+        if(dateArray[1]==='Jan')
+            month="01";
+        else if(dateArray[1]==='Feb')
+            month="02";
+        else if(dateArray[1]==='Mar')
+            month="03";
+        else if(dateArray[1]==='Apr')
+            month="04";
+        else if(dateArray[1]==='May')
+            month="05";
+        else if(dateArray[1]==='Jun')
+            month="06";
+        else if(dateArray[1]==='Jul')
+            month="07";
+        else if(dateArray[1]==='Aug')
+            month="08";
+        else if(dateArray[1]==='Sep')
+            month="09";
+        else if(dateArray[1]==='Oct')
+            month="10";
+        else if(dateArray[1]==='Nov')
+            month="11";
+        else
+            month="12";
+        var dateString=dateArray[3]+'-'+month+'-'+dateArray[2];//off by one YMD
+        var newDateStart = new Date(ogDateStart);
+        sendData.DutyStartDate=dateString;
+
+        sendData.DutyEndDate+="";
+        var dateArray=sendData.DutyEndDate.split(" ");//split by space to get rid of time
+        var month;
+        if(dateArray[1]==='Jan')
+            month="01";
+        else if(dateArray[1]==='Feb')
+            month="02";
+        else if(dateArray[1]==='Mar')
+            month="03";
+        else if(dateArray[1]==='Apr')
+            month="04";
+        else if(dateArray[1]==='May')
+            month="05";
+        else if(dateArray[1]==='Jun')
+            month="06";
+        else if(dateArray[1]==='Jul')
+            month="07";
+        else if(dateArray[1]==='Aug')
+            month="08";
+        else if(dateArray[1]==='Sep')
+            month="09";
+        else if(dateArray[1]==='Oct')
+            month="10";
+        else if(dateArray[1]==='Nov')
+            month="11";
+        else
+            month="12";
+
+
+        var dateString=dateArray[3]+'-'+month+'-'+dateArray[2];//off by one YMD
+        var newDateEnd = new Date(ogDateEnd);
+        sendData.DutyEndDate=dateString;
+
         //create data entry using createDuty.php
         $http(
             {
@@ -789,9 +845,14 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
             {
                 if(response.data)
                 //give new entry unique id
-                    sendData.DutyPositionID=response.data.id;
+                    sendData.DutyPositionID=response.data.id;       //this is undefined!!!!! TODO: fix this!!!!!
+
+                sendData.DutyStartDate= newDateStart;
+                sendData.DutyEndDate= newDateEnd;
                 //display new entry
-                $scope.duties.push(sendData);
+                $scope.duties.push(sendData);       //adding new duty to the end of the duties array
+
+                // $scope.backup_duties = angular.copy($scope.duties);                        //added 2/26 - save backup before updates made
 
 
                 //clears inputs in the create duty line
@@ -800,8 +861,14 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
                 document.getElementById('3').value = '';
                 document.getElementById('4').value = '';
                 document.getElementById('5').value = '';
+                document.getElementById("dutyAdd").style.display="none";
+                document.getElementById("addDutyButton").style.display="block";
+                document.getElementById("cancelAddDutyButton").style.display ="none";
+
 
                 alert("updated: [lead-follow_createDuty.php" + JSON.stringify(response));
+                alert("duties array: " + JSON.stringify($scope.duties));
+                alert("response id: " + JSON.stringify(response.data.id));
             },function(result){
                 alert("Failed");
             });
@@ -817,6 +884,40 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
         //pull InspectionType from dropdown
         sendData.JBInspectionType=$scope.inspect.JBInspectionType.InspectionType;
 
+
+        //Date display changes
+        sendData.InspectionDate+="";
+        var ogDate = sendData.InspectionDate;
+        var dateArray=sendData.InspectionDate.split(" ");//split by space to get rid of time
+        var month;
+        if(dateArray[1]==='Jan')
+            month="01";
+        else if(dateArray[1]==='Feb')
+            month="02";
+        else if(dateArray[1]==='Mar')
+            month="03";
+        else if(dateArray[1]==='Apr')
+            month="04";
+        else if(dateArray[1]==='May')
+            month="05";
+        else if(dateArray[1]==='Jun')
+            month="06";
+        else if(dateArray[1]==='Jul')
+            month="07";
+        else if(dateArray[1]==='Aug')
+            month="08";
+        else if(dateArray[1]==='Sep')
+            month="09";
+        else if(dateArray[1]==='Oct')
+            month="10";
+        else if(dateArray[1]==='Nov')
+            month="11";
+        else
+            month="12";
+
+        var dateString=dateArray[3]+'-'+month+'-'+dateArray[2]+' 00:00:00';
+        var newDate = new Date(ogDate);
+        sendData.InspectionDate=dateString;
         //alert(JSON.stringify(sendData));
 
         //create inspection entry using createInspections.php
@@ -832,13 +933,20 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
                 //create unique id for new entry
                     sendData.JBInspectionID=response.data.id;
                 //display new entry
+                sendData.InspectionDate= newDate;
                 $scope.inspections.push(sendData);
+                //$scope.backup_inspections = angular.copy($scope.inspections);                  //added 2/28 - save backup with new inspection
+
 
                 document.getElementById('i1').value = '';
                 document.getElementById('i2').value = '';
                 document.getElementById('i3').checked = false;
                 document.getElementById('i4').value = '';
                 document.getElementById('i5').value = '';
+                document.getElementById("inspectAdd").style.display="none";
+                document.getElementById("addInspectButton").style.display="block";
+                document.getElementById("cancelAddInspectButton").style.display ="none";
+
 
                 alert("updated: [lead-follow_createInspections.php" + JSON.stringify(response));
             },function(result){
@@ -856,6 +964,73 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
         //pull JBPosition from dropdown
         sendData.JBPosition=$scope.posit.JBPosition.JBPosition;
 
+        sendData.PosStartDate+="";
+        var ogDateStart = sendData.PosStartDate;
+        var ogDateEnd = sendData.PosEndDate;
+        //Andrew Changes 2/21/19
+        var dateArray=sendData.PosStartDate.split(" ");//split by space to get rid of time
+        var month;
+        if(dateArray[1]==='Jan')
+            month="01";
+        else if(dateArray[1]==='Feb')
+            month="02";
+        else if(dateArray[1]==='Mar')
+            month="03";
+        else if(dateArray[1]==='Apr')
+            month="04";
+        else if(dateArray[1]==='May')
+            month="05";
+        else if(dateArray[1]==='Jun')
+            month="06";
+        else if(dateArray[1]==='Jul')
+            month="07";
+        else if(dateArray[1]==='Aug')
+            month="08";
+        else if(dateArray[1]==='Sep')
+            month="09";
+        else if(dateArray[1]==='Oct')
+            month="10";
+        else if(dateArray[1]==='Nov')
+            month="11";
+        else
+            month="12";
+        var dateString=dateArray[3]+'-'+month+'-'+dateArray[2];//off by one YMD
+        var newDateStart = new Date(ogDateStart);
+        sendData.PosStartDate=dateString;
+
+        sendData.PosEndDate+="";
+        var dateArray=sendData.PosEndDate.split(" ");//split by space to get rid of time
+        var month;
+        if(dateArray[1]==='Jan')
+            month="01";
+        else if(dateArray[1]==='Feb')
+            month="02";
+        else if(dateArray[1]==='Mar')
+            month="03";
+        else if(dateArray[1]==='Apr')
+            month="04";
+        else if(dateArray[1]==='May')
+            month="05";
+        else if(dateArray[1]==='Jun')
+            month="06";
+        else if(dateArray[1]==='Jul')
+            month="07";
+        else if(dateArray[1]==='Aug')
+            month="08";
+        else if(dateArray[1]==='Sep')
+            month="09";
+        else if(dateArray[1]==='Oct')
+            month="10";
+        else if(dateArray[1]==='Nov')
+            month="11";
+        else
+            month="12";
+
+
+        var dateString=dateArray[3]+'-'+month+'-'+dateArray[2];//off by one YMD
+        var newDateEnd = new Date(ogDateEnd);
+        sendData.PosEndDate=dateString;
+
         //create position entry with createPosition.php
         $http ({
             method: 'POST',
@@ -868,14 +1043,24 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
                 if(response.data)
                 //create unique id for new entry
                     sendData.PositionID=response.data.id;
+
+                sendData.PosStartDate= newDateStart;
+                sendData.PosEndDate= newDateEnd;
                 //display new entry
                 $scope.pos.push(sendData);
+
+                //$scope.backup_positions = angular.copy($scope.pos);                        //added 2/28 - save backup with new position
+
 
                 document.getElementById('p1').value = '';
                 document.getElementById('p2').value = '';
                 document.getElementById('p3').value = '';
                 document.getElementById('p4').value = '';
                 document.getElementById('p5').checked = false;
+                document.getElementById("positAdd").style.display="none";
+                document.getElementById("addPositButton").style.display="block";
+                document.getElementById("cancelAddPositButton").style.display ="none";
+
 
                 alert("updated: [lead-follow_createPositions.php" + JSON.stringify(response));
             },function(result){
@@ -890,6 +1075,39 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
         sendData.fkClassDetailID = $scope.tasks[0].ClassDetailID;
         sendData.JBRank=$scope.rEvent.JBRank.RankObtained;
 
+        sendData.RankObtainedDate+="";
+        var ogDate = sendData.RankObtainedDate;
+        var dateArray=sendData.RankObtainedDate.split(" ");//split by space to get rid of time
+        var month;
+        if(dateArray[1]==='Jan')
+            month="01";
+        else if(dateArray[1]==='Feb')
+            month="02";
+        else if(dateArray[1]==='Mar')
+            month="03";
+        else if(dateArray[1]==='Apr')
+            month="04";
+        else if(dateArray[1]==='May')
+            month="05";
+        else if(dateArray[1]==='Jun')
+            month="06";
+        else if(dateArray[1]==='Jul')
+            month="07";
+        else if(dateArray[1]==='Aug')
+            month="08";
+        else if(dateArray[1]==='Sep')
+            month="09";
+        else if(dateArray[1]==='Oct')
+            month="10";
+        else if(dateArray[1]==='Nov')
+            month="11";
+        else
+            month="12";
+
+        var dateString=dateArray[3]+'-'+month+'-'+dateArray[2]+' 00:00:00';
+        var newDate = new Date(ogDate);
+        sendData.RankObtainedDate=dateString;
+
         $http ({
             method: 'POST',
             url: "./php/lead-follow_createRanks.php",
@@ -900,13 +1118,20 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
             {
                 if(response.data)
                     sendData.JBRankID=response.data.id;
+                sendData.RankObtainedDate= newDate;
                 $scope.rank.push(sendData);
                 //alert("data updated")
+                // $scope.backup_ranks = angular.copy($scope.rank);                        //added 2/28 - save backup with new rank
+
 
                 document.getElementById('r1').value = '';
                 document.getElementById('r2').value = '';
                 document.getElementById('r3').value = '';
                 document.getElementById('r4').checked = false;
+                document.getElementById("rankAdd").style.display="none";
+                document.getElementById("addRankButton").style.display="block";
+                document.getElementById("cancelAddRankButton").style.display ="none";
+
 
                 alert("updated: [lead-follow_createRanks.php" + JSON.stringify(response));
             },function(result){
@@ -1122,8 +1347,8 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
         $scope.duties.splice(index,1);                                  //delete the dutyfrom duties array
     };
     /*
-    deletes a inspection at a certain index
-     */
+  deletes inspection at specified index
+*/
     $scope.deleteInspect = function(index){
         $scope.inspections.splice(index,1);
     };
