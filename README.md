@@ -26,8 +26,12 @@ Andrew, Anthony, and Kali's changes to Lead-Follow page
 - applied the style changes to all sections
 - fixed bug where cancel button did not disappear when object is created
 - added min function for date fields when creating a new entry.
-
-## TO DO:
 - fix issue where if a user edits a newly created line, the changes will not be saved
 - Fix table stylization bug for Positions and Ranks causing labels to be on same line as data field, might be a browser local issue
 
+
+## TO DO:
+- Make Create button look like Save button and position same as save button
+- Disable Create when Editing
+- Disable Edit when Creating
+- Make date conversion into a callable method that returns the date formatted as desired.
