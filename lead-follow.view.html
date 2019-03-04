@@ -124,10 +124,10 @@
                             <input id="2" name="DutyDidFail: " type="checkbox" ng-true-value="'1'" ng-false-value="'0'"
                                    ng-model="duty.DutyDidFail" ng-disabled="addDuty"></th>
                         <th><label>Start Date: </label>
-                            <input id="3" name="DutyStartDate" type="date" placeholder="MM/DD/YYYY"
+                            <input class="LF-Date" id="3" name="DutyStartDate" type="date" placeholder="MM/DD/YYYY"
                                    ng-model="duty.DutyStartDate" ng-disabled="addDuty"></th>
                         <th><label>End Date: </label>
-                            <input id="4" name="DutyEndDate" type="date" placeholder="MM/DD/YYYY"
+                            <input class="LF-Date" id="4" name="DutyEndDate" type="date" placeholder="MM/DD/YYYY"
                                    ng-model="duty.DutyEndDate" ng-disabled="addDuty"></th>
                         <th><label>Note: </label>
                             <input id="5" name="DutyNote" type="text" ng-model="duty.DutyNote" ng-disabled="addDuty"
@@ -145,9 +145,7 @@
                 <button class="btn btn-outline-danger" ng-click="cancelUpdate('duties')" ng-disabled="editDuty">Cancel</button>
             </div>
         </div>
-
         <br>
-
         <table style="width:100%">
             <tr>
                 <th style="text-align: left"><h3>Inspections</h3></th>
@@ -161,46 +159,46 @@
             </tr>
         </table>
         <div class="well container infoContainer text-center" style="border: 1px solid white">
-		    <div class="well container infoContainer text-center" style="border: 1px solid white">
-			    <table>
-				    <tr>
-					    <th>Date</th>
-					    <th>Inspection Type</th>
-					    <th>Passed</th>
-					    <th>Merit Adj</th>
-					    <th>Note</th>
-				    </tr>
-				    <tr ng-repeat="inspect in inspections">
-					    <td><input name=InspectionDate type="date" placeholder="MM/DD/YYYY"
-                               ng-model="inspect.InspectionDate" ng-disabled="editInspect"></td>
-					    <td>{{inspect.JBInspectionType}}</td>
-					    <td><input name="DidPassInspection" type="checkbox" ng-true-value="'1'" ng-false-value="'0'"
-                               ng-model="inspect.DidPassInspection" ng-disabled="editInspect"></td>
-					    <td>{{inspect.InspMeritAdj}}</td>
+            <div class="well container infoContainer text-center" style="border: 1px solid white">
+                <table>
+                    <tr>
+                        <th>Date</th>
+                        <th>Inspection Type</th>
+                        <th>Passed</th>
+                        <th>Merit Adj</th>
+                        <th>Note</th>
+                    </tr>
+                    <tr ng-repeat="inspect in inspections">
+                        <td><input name=InspectionDate type="date" placeholder="MM/DD/YYYY"
+                                   ng-model="inspect.InspectionDate" ng-disabled="editInspect"></td>
+                        <td>{{inspect.JBInspectionType}}</td>
+                        <td><input name="DidPassInspection" type="checkbox" ng-true-value="'1'" ng-false-value="'0'"
+                                   ng-model="inspect.DidPassInspection" ng-disabled="editInspect"></td>
+                        <td>{{inspect.InspMeritAdj}}</td>
                         <td><input name="InspectionNote" type="text" ng-model="inspect.InspectionNote" ng-disabled="editInspect"></td>
                         <td>
                             <button id=deleteInspectBtn" class="btn btn-danger" ng-disabled="editInspect"
-                                ng-click="deleteInspect($index)">delete
+                                    ng-click="deleteInspect($index)">delete
                             </button>
                         </td>
-				    </tr>
-			    </table>
-	    	</div>
+                    </tr>
+                </table>
+            </div>
             <button id="addInspectButton" class="btn btn-link" ng-click="addElement('inspections')" style="margin: 0 auto">+Add Inspection</button>
             <form id="inspectAdd">
                 <table>
                     <tr>
                         <th><label>Date: </label>
-                            <input id="i1" name="InspectionDate" type="date" placeholder="MM/DD/YYYY"
-                                ng-model="inspect.InspectionDate" ng-disabled="addInspect"></th>
+                            <input class="LF-Date" id="i1" name="InspectionDate" type="date" placeholder="MM/DD/YYYY"
+                                   ng-model="inspect.InspectionDate" ng-disabled="addInspect"></th>
                         <th><label>Inspection Type: </label>
-                        <!--dropdown options from tlkpJBInspectionType-->
-                        <select id="i2" ng-model="inspect.JBInspectionType" name="JBInspectionType"
-                                ng-options="option.InspectionType for option in InspectionTypeOptions track by option.id"
-                                ng-change="changeInspectionType(inspect.JBInspectionType)" ng-disabled="addInspect"></select></th>
+                            <!--dropdown options from tlkpJBInspectionType-->
+                            <select id="i2" ng-model="inspect.JBInspectionType" name="JBInspectionType"
+                                    ng-options="option.InspectionType for option in InspectionTypeOptions track by option.id"
+                                    ng-change="changeInspectionType(inspect.JBInspectionType)" ng-disabled="addInspect"></select></th>
                         <th><label>Passed: </label>
                             <input id="i3" name="DidPassInspection" type="checkbox" ng-true-value="'1'" ng-false-value="'0'"
-                                ng-model="inspect.DidPassInspection" ng-disabled="addInspect"></th>
+                                   ng-model="inspect.DidPassInspection" ng-disabled="addInspect"></th>
                         <th><label>Merit Adj: </label>
                             <input id="i4" name="InspMeritAdj" type="text" ng-model="inspect.InspMeritAdj" ng-disabled="addInspect"></th>
                         <th><label>Note:  </label>
@@ -275,10 +273,10 @@
                                     ng-options="option.JBPosition for option in JBPositionOptions track by option.id"
                                     ng-change="changeJBPosition(posit.JBPosition)"></select></th>
                         <th><label>Start Date: </label>
-                            <input id= "p2" name="PosStartDate" type="date" placeholder="MM/DD/YYYY" ng-disabled="addPosit"
+                            <input class="LF-Date" id= "p2" name="PosStartDate" type="date" placeholder="MM/DD/YYYY" ng-disabled="addPosit"
                                    ng-model="posit.PosStartDate"></th>
                         <th><label>End Date: </label>
-                            <input id= "p3" name="PosEndDate" type="date" ng-disabled="addPosit" ng-model="posit.PosEndDate">
+                            <input class="LF-Date" id= "p3" name="PosEndDate" type="date" ng-disabled="addPosit" ng-model="posit.PosEndDate">
                         </th>
                         <th><label>Note: </label>
                             <input id= "p4" name="PosNote" type="text" ng-disabled="addPosit" ng-model="posit.PosNote"></th>
@@ -301,7 +299,6 @@
         <br>
         <hr>
         <br>
-
         <table style="width:100%">
             <tr>
                 <th style="text-align: left"><h3>Ranks</h3></th>
@@ -329,11 +326,11 @@
                     <tr ng-repeat="rEvent in rank">
                         <td>{{rEvent.JBRank}}</td>
                         <td><input name="RankObtainedDate" type="date" ng-disabled="editRank"
-                               ng-model="rEvent.RankObtainedDate"></td>
+                                   ng-model="rEvent.RankObtainedDate"></td>
                         <td><input name="RankPromotionNote" type="text" ng-disabled="editRank"
-                               ng-model="rEvent.RankPromotionNote"></td>
+                                   ng-model="rEvent.RankPromotionNote"></td>
                         <td><input name="RankDidFail" type="checkbox" ng-disabled="editRank" ng-true-value="'1'"
-                               ng-false-value="'0'" ng-model="rEvent.RankDidFail"></td>
+                                   ng-false-value="'0'" ng-model="rEvent.RankDidFail"></td>
                         <td>
                             <button id=deleteRankbtn" class="btn btn-danger" ng-disabled="editRank"
                                     ng-click="deleteRank($index)">delete
@@ -352,14 +349,14 @@
                                     ng-options="option.RankObtained for option in RankOptions track by option.id"
                                     ng-change="changeRank(rEvent.JBRank)"></select></th>
                         <th><label>Date Obtained: </label>
-                            <input id= "r2" name="RankObtainedDate" type="date" ng-disabled="addRank"
+                            <input class="LF-Date" id= "r2" name="RankObtainedDate" type="date" ng-disabled="addRank"
                                    ng-model="rEvent.RankObtainedDate"></th>
                         <th><label>Note: </label>
                             <input id= "r3" name="RankPromotionNote" type="text" ng-disabled="addRank"
-                                ng-model="rEvent.RankPromotionNote"></th>
+                                   ng-model="rEvent.RankPromotionNote"></th>
                         <th><label>Failed: </label>
                             <input id= "r4" name="RankDidFail: " type="checkbox" ng-disabled="addRank" ng-true-value="'1'"
-                                ng-false-value="'0'" ng-model="rEvent.RankDidFail">
+                                   ng-false-value="'0'" ng-model="rEvent.RankDidFail">
                         <th><label> </label>
                             <button class="btn btn-success" ng-click="CreateRank()" ng-disabled="addRank">Create
                             </button>
