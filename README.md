@@ -24,7 +24,7 @@ Andrew, Anthony, and Kali's changes to Lead-Follow page
 - dates, create functions for all sections not storing date in proper format: fixed
 - changed style for create line, allowing sections to only appear after clicking button
 - applied the style changes to all sections
-- fixed bug where cancel button did not disappear when no object is created
+- fixed bug where cancel button did not disappear when object is created
 
 ## TO DO:
 - fix issue where if a user edits a newly created line, the changes will not be saved
