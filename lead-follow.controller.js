@@ -825,7 +825,7 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
             {
                 if(response.data)
                     //give new entry unique id
-                    sendData.DutyPositionID=response.data.id;
+                    sendData.DutyPositionID=response.data.id;       //this is undefined!!!!! TODO: fix this!!!!!
 
                     sendData.DutyStartDate= newDateStart;
                     sendData.DutyEndDate= newDateEnd;
@@ -843,6 +843,7 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
                 document.getElementById('5').value = '';
                 document.getElementById("dutyAdd").style.display="none";
                 document.getElementById("addDutyButton").style.display="block";
+                document.getElementById("cancelAddDutyButton").style.display ="none";
 
 
                 alert("updated: [lead-follow_createDuty.php" + JSON.stringify(response));
@@ -924,6 +925,8 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
                 document.getElementById('i5').value = '';
                 document.getElementById("inspectAdd").style.display="none";
                 document.getElementById("addInspectButton").style.display="block";
+                document.getElementById("cancelAddInspectButton").style.display ="none";
+
 
                 alert("updated: [lead-follow_createInspections.php" + JSON.stringify(response));
             },function(result){
@@ -1036,6 +1039,8 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
                 document.getElementById('p5').checked = false;
                 document.getElementById("positAdd").style.display="none";
                 document.getElementById("addPositButton").style.display="block";
+                document.getElementById("cancelAddPositButton").style.display ="none";
+
 
                 alert("updated: [lead-follow_createPositions.php" + JSON.stringify(response));
             },function(result){
@@ -1105,6 +1110,8 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
                 document.getElementById('r4').checked = false;
                 document.getElementById("rankAdd").style.display="none";
                 document.getElementById("addRankButton").style.display="block";
+                document.getElementById("cancelAddRankButton").style.display ="none";
+
 
                 alert("updated: [lead-follow_createRanks.php" + JSON.stringify(response));
             },function(result){
@@ -1320,8 +1327,8 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
         $scope.duties.splice(index,1);                                  //delete the dutyfrom duties array
     };
     /*
-    deletes a inspection at a certain index
-     */
+  deletes inspection at specified index
+*/
     $scope.deleteInspect = function(index){
         $scope.inspections.splice(index,1);
     };
@@ -1337,7 +1344,7 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
     $scope.deletePosit = function(index){
         $scope.pos.splice(index,1);
     };
-
+    
     //saves selection from DutyPosition dropdown
     $scope.changeJobPosition = function (JobPosition) {
         if (JobPosition != null) {
