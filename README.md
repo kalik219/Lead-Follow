@@ -31,6 +31,8 @@ Andrew, Anthony, and Kali's changes to Lead-Follow page
 - Made Create button look like Save button and positioned same as save button
 - Disabled Create when Editing
 - Disabled Edit when Creating
+- Make date conversion into a callable method that returns the date formatted as desired.
+- Changed all var to let to remove warnings
 
 ## TO DO:
-- Make date conversion into a callable method that returns the date formatted as desired.
+
