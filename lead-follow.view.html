@@ -4,21 +4,6 @@
 <!--past values for duty,inspection,position,and rank are also displayed-->
 
 <!--load app.controller from leadFollowCtrl.js-->
-<head>
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <script src="https://unpkg.com/gijgo@1.9.11/js/gijgo.min.js" type="text/javascript"></script>
-    <link href="https://unpkg.com/gijgo@1.9.11/css/gijgo.min.css" rel="stylesheet" type="text/css"/>
-</head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-    textarea {
-        resize: none;
-    }
-</style>
-
-<!--load app.controller from leadFollowCtrl.js-->
 <div class="well container infoContainer" id="lfContainer">
     <div ng-controller="leadFollowController">
         <table style="width:100%">
@@ -62,7 +47,7 @@
                 </div>
             </form>
         </div>
-        <hr>
+
 
         <table style="width:100%">
             <tr>
@@ -132,20 +117,21 @@
                         <th><label>Note: </label>
                             <input id="5" name="DutyNote" type="text" ng-model="duty.DutyNote" ng-disabled="addDuty"
                                    style="width:500px"></th>
-                        <th><label> </label>
-                            <button class="btn btn-success" ng-click="CreateDuty()" ng-disabled="addDuty">Create
-                            </button>
-                        </th>
                     </tr>
                 </table>
             </form>
-            <button id="cancelAddDutyButton" class="btn btn-outline-danger" ng-click="cancelAddElement('duties')" style="margin: 0 auto">Cancel</button>
+            <div id="saveCancelAddDutyButtons">
+                <button class="btn btn-outline-primary" ng-click="CreateDuty()" style="margin: 0 auto" >Save</button>
+                <button class="btn btn-outline-danger" ng-click="cancelAddElement('duties')" style="margin: 0 auto">Cancel</button>
+            </div>
             <div id="dutySaveCancelButtons"><!--2/26 - changed updateDuty() to saveSection('duties')-->
                 <button class="btn btn-outline-primary" ng-click="saveSection('duties')" ng-disabled="editDuty">Save</button>
                 <button class="btn btn-outline-danger" ng-click="cancelUpdate('duties')" ng-disabled="editDuty">Cancel</button>
             </div>
         </div>
+
         <br>
+
         <table style="width:100%">
             <tr>
                 <th style="text-align: left"><h3>Inspections</h3></th>
@@ -159,63 +145,63 @@
             </tr>
         </table>
         <div class="well container infoContainer text-center" style="border: 1px solid white">
-            <div class="well container infoContainer text-center" style="border: 1px solid white">
-                <table>
-                    <tr>
-                        <th>Date</th>
-                        <th>Inspection Type</th>
-                        <th>Passed</th>
-                        <th>Merit Adj</th>
-                        <th>Note</th>
-                    </tr>
-                    <tr ng-repeat="inspect in inspections">
-                        <td><input name=InspectionDate type="date" placeholder="MM/DD/YYYY"
-                                   ng-model="inspect.InspectionDate" ng-disabled="editInspect"></td>
-                        <td>{{inspect.JBInspectionType}}</td>
-                        <td><input name="DidPassInspection" type="checkbox" ng-true-value="'1'" ng-false-value="'0'"
-                                   ng-model="inspect.DidPassInspection" ng-disabled="editInspect"></td>
-                        <td>{{inspect.InspMeritAdj}}</td>
+		    <div class="well container infoContainer text-center" style="border: 1px solid white">
+			    <table style="width:100%">
+				    <tr>
+					    <th>Date</th>
+					    <th>Inspection Type</th>
+					    <th>Passed</th>
+					    <th>Merit Adj</th>
+					    <th>Note</th>
+				    </tr>
+				    <tr ng-repeat="inspect in inspections">
+					    <td><input name=InspectionDate type="date" placeholder="MM/DD/YYYY"
+                               ng-model="inspect.InspectionDate" ng-disabled="editInspect"></td>
+					    <td>{{inspect.JBInspectionType}}</td>
+					    <td><input name="DidPassInspection" type="checkbox" ng-true-value="'1'" ng-false-value="'0'"
+                               ng-model="inspect.DidPassInspection" ng-disabled="editInspect"></td>
+					    <td>{{inspect.InspMeritAdj}}</td>
                         <td><input name="InspectionNote" type="text" ng-model="inspect.InspectionNote" ng-disabled="editInspect"></td>
                         <td>
                             <button id=deleteInspectBtn" class="btn btn-danger" ng-disabled="editInspect"
-                                    ng-click="deleteInspect($index)">delete
+                                ng-click="deleteInspect($index)">delete
                             </button>
                         </td>
-                    </tr>
-                </table>
-            </div>
+				    </tr>
+			    </table>
+	    	</div>
             <button id="addInspectButton" class="btn btn-link" ng-click="addElement('inspections')" style="margin: 0 auto">+Add Inspection</button>
             <form id="inspectAdd">
-                <table>
+                <table style="width:100%">
                     <tr>
                         <th><label>Date: </label>
                             <input class="LF-Date" id="i1" name="InspectionDate" type="date" placeholder="MM/DD/YYYY"
-                                   ng-model="inspect.InspectionDate" ng-disabled="addInspect"></th>
+                                ng-model="inspect.InspectionDate" ng-disabled="addInspect"></th>
                         <th><label>Inspection Type: </label>
-                            <!--dropdown options from tlkpJBInspectionType-->
-                            <select id="i2" ng-model="inspect.JBInspectionType" name="JBInspectionType"
-                                    ng-options="option.InspectionType for option in InspectionTypeOptions track by option.id"
-                                    ng-change="changeInspectionType(inspect.JBInspectionType)" ng-disabled="addInspect"></select></th>
+                        <!--dropdown options from tlkpJBInspectionType-->
+                        <select id="i2" ng-model="inspect.JBInspectionType" name="JBInspectionType"
+                                ng-options="option.InspectionType for option in InspectionTypeOptions track by option.id"
+                                ng-change="changeInspectionType(inspect.JBInspectionType)" ng-disabled="addInspect"></select></th>
                         <th><label>Passed: </label>
                             <input id="i3" name="DidPassInspection" type="checkbox" ng-true-value="'1'" ng-false-value="'0'"
-                                   ng-model="inspect.DidPassInspection" ng-disabled="addInspect"></th>
+                                ng-model="inspect.DidPassInspection" ng-disabled="addInspect"></th>
                         <th><label>Merit Adj: </label>
                             <input id="i4" name="InspMeritAdj" type="text" ng-model="inspect.InspMeritAdj" ng-disabled="addInspect"></th>
                         <th><label>Note:  </label>
                             <input id="i5" name="InspectionNote" type="text" ng-model="inspect.InspectionNote" ng-disabled="addInspect"></th>
-                        <th><label> </label>
-                            <button class="btn btn-success" ng-click="CreateInspect()" ng-disabled="addInspect">Create
-                            </button>
-                        </th>
                     </tr>
                 </table>
             </form>
-            <button id="cancelAddInspectButton" class="btn btn-outline-danger" ng-click="cancelAddElement('inspections')" style="margin: 0 auto">Cancel</button>
-            <div id="inspectSaveCancelButtons"><!--2/26 - changed updateInspect() to saveSection('inspection')-->
+            <div id="saveCancelAddInspectButtons">
+                <button class="btn btn-outline-primary" ng-click="CreateInspect()" style="margin: 0 auto" >Save</button>
+                <button class="btn btn-outline-danger" ng-click="cancelAddElement('inspections')" style="margin: 0 auto">Cancel</button>
+            </div>
+			<div id="inspectSaveCancelButtons"><!--2/26 - changed updateInspect() to saveSection('inspection')-->
                 <button class="btn btn-outline-primary" ng-click="saveSection('inspections')" ng-disabled="editInspect">Save</button>
                 <button class="btn btn-outline-danger" ng-click="cancelUpdate('inspections')" ng-disabled="editInspect">Cancel</button>
             </div>
-        </div>
+		</div>
+    </span>
         <hr/>
 
         <br>
@@ -239,7 +225,7 @@
         <div class="well container infoContainer text-center" style="border: 1px solid white">
             <!--dispalys all position instances-->
             <div class="well container infoContainer text-center" style="border: 1px solid white">
-                <table>
+                <table style="width:100%">
                     <tr>
                         <th>Position</th>
                         <th>Start Date</th>
@@ -265,7 +251,7 @@
             </div>
             <button id="addPositButton" class="btn btn-link" ng-click="addElement('positions')" style="margin: 0 auto">+Add Position</button>
             <form id = "positAdd">
-                <table>
+                <table style="width:100%">
                     <tr>
                         <th><label>Position: </label>
                             <!--dropdown options from tlkpJBPosition-->
@@ -283,14 +269,13 @@
                         <th><label>Failed: </label>
                             <input id= "p5" name="PosDidFail: " type="checkbox" ng-disabled="addPosit" ng-true-value="'1'"
                                    ng-false-value="'0'" ng-model="posit.PosDidFail"></th>
-                        <th><label> </label>
-                            <button class="btn btn-success" ng-click="CreatePosit()" ng-disabled="addPosit">Create
-                            </button>
-                        </th>
                     </tr>
                 </table>
             </form>
-            <button id="cancelAddPositButton" class="btn btn-outline-danger" ng-click="cancelAddElement('positions')" style="margin: 0 auto">Cancel</button>
+            <div id="saveCancelAddPositButtons">
+                <button class="btn btn-outline-primary" ng-click="CreatePosit()" style="margin: 0 auto" >Save</button>
+                <button class="btn btn-outline-danger" ng-click="cancelAddElement('positions')" style="margin: 0 auto">Cancel</button>
+            </div>
             <div id="positionSaveCancelButtons">
                 <button class="btn btn-outline-primary" ng-click="saveSection('positions')" ng-disabled="editPosit">Save</button>
                 <button class="btn btn-outline-danger" ng-click="cancelUpdate('positions')" ng-disabled="editPosit">Cancel</button>
@@ -299,6 +284,7 @@
         <br>
         <hr>
         <br>
+
         <table style="width:100%">
             <tr>
                 <th style="text-align: left"><h3>Ranks</h3></th>
@@ -316,7 +302,7 @@
             <!--creates new rank entry-->
             <!--dispalys all rank instances-->
             <div class="well container infoContainer text-center" style="border: 1px solid white">
-                <table>
+                <table style="width:100%">
                     <tr>
                         <th>Rank</th>
                         <th>Date Obtained</th>
@@ -333,7 +319,7 @@
                                    ng-false-value="'0'" ng-model="rEvent.RankDidFail"></td>
                         <td>
                             <button id=deleteRankbtn" class="btn btn-danger" ng-disabled="editRank"
-                                    ng-click="deleteRank($index)">delete
+                                ng-click="deleteRank($index)">delete
                             </button>
                         </td>
                     </tr>
@@ -341,7 +327,7 @@
             </div>
             <button id="addRankButton" class="btn btn-link" ng-click="addElement('ranks')" style="margin: 0 auto">+Add Rank</button>
             <form id="rankAdd">
-                <table>
+                <table style="width:100%">
                     <tr>
                         <th><label>Rank: </label>
                             <!--dropdown options from tlkpJBRank-->
@@ -353,18 +339,17 @@
                                    ng-model="rEvent.RankObtainedDate"></th>
                         <th><label>Note: </label>
                             <input id= "r3" name="RankPromotionNote" type="text" ng-disabled="addRank"
-                                   ng-model="rEvent.RankPromotionNote"></th>
+                                ng-model="rEvent.RankPromotionNote"></th>
                         <th><label>Failed: </label>
                             <input id= "r4" name="RankDidFail: " type="checkbox" ng-disabled="addRank" ng-true-value="'1'"
-                                   ng-false-value="'0'" ng-model="rEvent.RankDidFail">
-                        <th><label> </label>
-                            <button class="btn btn-success" ng-click="CreateRank()" ng-disabled="addRank">Create
-                            </button>
-                        </th>
+                                ng-false-value="'0'" ng-model="rEvent.RankDidFail">
                     </tr>
                 </table>
             </form>
-            <button id="cancelAddRankButton" class="btn btn-outline-danger" ng-click="cancelAddElement('ranks')" style="margin: 0 auto">Cancel</button>
+            <div id="saveCancelAddRankButtons">
+                <button class="btn btn-outline-primary" ng-click="CreateRank()" style="margin: 0 auto" >Save</button>
+                <button class="btn btn-outline-danger" ng-click="cancelAddElement('ranks')" style="margin: 0 auto">Cancel</button>
+            </div>
             <div id="rankSaveCancelButtons">
                 <button class="btn btn-outline-primary" ng-click="saveSection('ranks')" ng-disabled="editRank">Save</button>
                 <button class="btn btn-outline-danger" ng-click="cancelUpdate('ranks')" ng-disabled="editRank">Cancel</button>
@@ -372,5 +357,4 @@
         </div>
         <br>
     </div>
-</div>
 </div>
