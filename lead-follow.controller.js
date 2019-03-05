@@ -1201,4 +1201,6 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
             $scope.rEvent.JBRank.value = RankObtained;
         }
     };
+  };
+ };
 });
