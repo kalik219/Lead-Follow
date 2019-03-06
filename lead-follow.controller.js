@@ -25,6 +25,8 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
         for (let i = 0; i < list.length; i++) {
             // list[i] is a node with the desired class name
             list[i].setAttribute("min",today);
+        }
+    }
     //Min function end
 
     //Date format function
