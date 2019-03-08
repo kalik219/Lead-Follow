@@ -1,6 +1,11 @@
 # Lead-Follow
 Andrew, Anthony, and Kali's changes to Lead-Follow page
 
+## TO DO:
+- data validation in creating new objects on lead-follow page
+- possibly get rid of the create php files and merge those into the update. This will make the save button much easier
+- switch to Dr. Phelps' date functions instead of our own
+
 ## COMPLETED:
 - checkboxes transfer to the page
 - able to select specific dates, and read in date objects
@@ -37,7 +42,3 @@ Andrew, Anthony, and Kali's changes to Lead-Follow page
 - edited controller to clear values after sent when a new obj is created
 - change the update php files to only update when a change is made, not update everything over again
 
-## TO DO:
-- data validation in creating new objects on lead-follow page
-- possibly get rid of the create php files and merge those into the update. This will make the save button much easier
-- switch to Dr. Phelps' date functions instead of our own
