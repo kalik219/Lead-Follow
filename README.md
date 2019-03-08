@@ -33,6 +33,9 @@ Andrew, Anthony, and Kali's changes to Lead-Follow page
 - Disabled Edit when Creating
 - Make date conversion into a callable method that returns the date formatted as desired.
 - Changed all var to let to remove warnings
+- edited create php files to clear previous fiels and set values only when a value exists
+- edited controller to clear values after sent when a new obj is created
 
 ## TO DO:
+- change the update php files to only update when a change is made, not update everything over again
 
