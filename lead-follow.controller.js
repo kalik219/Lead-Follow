@@ -629,12 +629,12 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
             function(response)
             {
                 if(response.data)
-                    alert(JSON.stringify(response));
                     //give new entry unique id
                     sendData.DutyPositionID=response.data.id;       //this is undefined!!!!! TODO: fix this!!!!!
 
                     sendData.DutyStartDate= newDateStart;
                     sendData.DutyEndDate= newDateEnd;
+
                     //display new entry
                     $scope.duties.push(sendData);       //adding new duty to the end of the duties array
 
@@ -682,6 +682,7 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
         var newDate = new Date(ogDate);
         sendData.InspectionDate=dateFormat(inspectDateArray);
 
+        alert(JSON.stringify(sendData));
         //create inspection entry using createInspections.php
         $http ({
             method: 'POST',
@@ -692,7 +693,7 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
             function(response)
             {
                 if(response.data)
-                    //create unique id for new entry
+                //create unique id for new entry
                     sendData.JBInspectionID=response.data.id;
                     //display new entry
                     sendData.InspectionDate= newDate;
@@ -710,6 +711,12 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
                 document.getElementById("saveCancelAddInspectButtons").style.display ="none";
                 document.getElementById("editButtonInspections").style.display = "block";
 
+                //added to clear the values from scope after they have been sent to DB & received
+                $scope.inspections.InspectionDate = "";
+                $scope.inspections.JBInspectionType = "";
+                $scope.inspections.DidPassInspection = "0";
+                $scope.inspections.InspectionNote = "";
+                $scope.inspections.InspMeritAdj = "";
 
 
                 alert("updated: [lead-follow_createInspections.php" + JSON.stringify(response));
@@ -741,6 +748,8 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
         var newDateEnd = new Date(ogDateEnd);
         sendData.PosEndDate=dateFormat(posEndArray);
 
+        alert(JSON.stringify(sendData));
+
         //create position entry with createPosition.php
         $http ({
             method: 'POST',
@@ -751,7 +760,7 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
             function(response)
             {
                 if(response.data)
-                    //create unique id for new entry
+                //create unique id for new entry
                     sendData.PositionID=response.data.id;
 
                     sendData.PosStartDate= newDateStart;
@@ -772,6 +781,12 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
                 document.getElementById("saveCancelAddPositButtons").style.display ="none";
                 document.getElementById("editButtonPositions").style.display = "block";
 
+                //added to clear the values from scope after they have been sent to DB & received
+                $scope.pos.PosStartDate = "";
+                $scope.pos.PosEndDate = "";
+                $scope.pos.JBPosition = "";
+                $scope.pos.PosDidFail = "0";
+                $scope.pos.PosNote = "";
 
                 alert("updated: [lead-follow_createPositions.php" + JSON.stringify(response));
             },function(result){
@@ -793,6 +808,8 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
         var newDate = new Date(ogDate);
         sendData.RankDate=dateFormat(rankDateArray);
 
+        alert(JSON.stringify(sendData));
+
         $http ({
             method: 'POST',
             url: "./php/lead-follow_createRanks.php",
@@ -802,7 +819,7 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
             function(response)
             {
                 if(response.data)
-                    sendData.JBRankID=response.data.id;
+                sendData.JBRankID=response.data.id;
                     sendData.RankObtainedDate= newDate;
                     $scope.rank.push(sendData);
 
@@ -815,6 +832,11 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
                 document.getElementById("saveCancelAddRankButtons").style.display ="none";
                 document.getElementById("editButtonRanks").style.display = "block";
 
+                //added to clear the values from scope after they have been sent to DB & received
+                $scope.rank.RankObtainedDate = "";
+                $scope.rank.RankDidFail = "0";
+                $scope.rank.RankPromotionNote = "";
+                $scope.rank.JBRank = "";
 
                 alert("updated: [lead-follow_createRanks.php" + JSON.stringify(response));
             },function(result){
