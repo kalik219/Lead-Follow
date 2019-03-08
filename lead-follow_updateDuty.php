@@ -27,28 +27,25 @@ if (isset($_POST['op'])) {
 //checks to see if updates or deletions need to be made
 
 if($op=='UPDATE') {
+    $sql = "SELECT tblJBDuties.*
+            FROM tblJBDuties
+            WHERE DutyPositionID = $DutyPositionID";
 
-    $validStart = strtotime($_POST['DutyStartDate']);
-    $validStart = date('Y-m-d', $validStart);//off by one (gets fixed when retrieving in the js)
-    $DutyStartDate = $validStart;
+    if ($result = $conn->runSelectQuery($sql)) {
+        $fieldinfo = mysqli_fetch_fields($result);
+        $row = $result->fetch_assoc();
 
+        foreach ($fieldinfo as $val) {
+            $fieldName = $val->name;
 
-    $validEnd = strtotime($_POST['DutyEndDate']);
-    $validEnd = date('Y-m-d', $validEnd);//off by one (gets fixed when retrieving in the js)
-    $DutyEndDate = $validEnd;
-
-    $DutyNote = $_POST['DutyNote'];
-    $DutyDidFail = $_POST['DutyDidFail'];
-
-    $sql = "UPDATE tblJBDuties
-SET
-  DutyStartDate = '$DutyStartDate',
-  DutyEndDate = '$DutyEndDate',
-  DutyNote = '$DutyNote',
-  DutyDidFail = '$DutyDidFail'
-WHERE
-  DutyPositionID = '$DutyPositionID'";
-
+            // check to see if there is a post value
+            if (isset($_POST[$fieldName])) {
+                $fieldValue = filter_input(INPUT_POST, $fieldName);
+                $sql = "UPDATE tblJBDuties set $fieldName = '$fieldValue' WHERE  DutyPositionID=$DutyPositionID";
+                $conn->runQuery($sql);
+            }
+        }
+    }
     $result = $conn->runQuery($sql);
 
     print_r($sql);

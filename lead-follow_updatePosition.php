@@ -14,7 +14,7 @@ $op = 'UPDATE';
 $PositionID = $_POST['PositionID'];
 
 if (isset($_POST['PositionID'])) {
-    $DutyPositionID = filter_input(INPUT_POST, "PositionID");
+    $PositionID = filter_input(INPUT_POST, "PositionID");
     unset($_POST['PositionID']);
 }
 
@@ -25,34 +25,34 @@ if (isset($_POST['op'])) {
 
 //checks to see if updates or deletions need to be made
 if($op=='UPDATE') {
+    $sql = "SELECT tblJBPositions.*
+            FROM tblJBPositions
+            WHERE PositionID = $PositionID";
 
-    $validStart = strtotime($_POST['PosStartDate']);
-    $validStart = date('Y-m-d', $validStart);//off by one (gets fixed when retrieving in the js)
-    $PosStartDate = $validStart;
+    if ($result = $conn->runSelectQuery($sql)) {
+        $fieldinfo = mysqli_fetch_fields($result);
+        $row = $result->fetch_assoc();
 
+        foreach ($fieldinfo as $val) {
+            $fieldName = $val->name;
 
-    $validEnd = strtotime($_POST['PosEndDate']);
-    $validEnd = date('Y-m-d', $validEnd);//off by one (gets fixed when retrieving in the js)
-    $PosEndDate = $validEnd;
-    $PosNote = $_POST['PosNote'];
-    $PosDidFail = $_POST['PosDidFail'];
-
-    $sql = "UPDATE tblJBPositions
-SET
-  PosStartDate = '$PosStartDate',
-  PosEndDate = '$PosEndDate',
-  PosNote = '$PosNote',
-  PosDidFail = '$PosDidFail'
-WHERE
-  PositionID = '$PositionID'";
-
+            // check to see if there is a post value
+            if (isset($_POST[$fieldName])) {
+                $fieldValue = filter_input(INPUT_POST, $fieldName);
+                $sql = "UPDATE tblJBPositions set $fieldName = '$fieldValue' WHERE  PositionID=$PositionID";
+                $conn->runQuery($sql);
+            }
+        }
+    }
     $result = $conn->runQuery($sql);
+
+    print_r($sql);
+
     if ($result === TRUE) {
         echo "Record updated successfully";
     } else {
         echo "Error updating record: $sql";
     }
-//$connection->close();
 }
 else if($op == 'DELETE') {
     $sql = " DELETE FROM tblJBPositions
