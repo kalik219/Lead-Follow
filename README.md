@@ -39,3 +39,5 @@ Andrew, Anthony, and Kali's changes to Lead-Follow page
 
 ## TO DO:
 - data validation in creating new objects on lead-follow page
+- possibly get rid of the create php files and merge those into the update. This will make the save button much easier
+- switch to Dr. Phelps' date functions instead of our own
