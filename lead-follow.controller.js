@@ -712,11 +712,11 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
                 document.getElementById("editButtonInspections").style.display = "block";
 
                 //added to clear the values from scope after they have been sent to DB & received
-                $scope.inspections.InspectionDate = "";
-                $scope.inspections.JBInspectionType = "";
-                $scope.inspections.DidPassInspection = "0";
-                $scope.inspections.InspectionNote = "";
-                $scope.inspections.InspMeritAdj = "";
+                $scope.inspect.InspectionDate = "";
+                $scope.inspect.JBInspectionType = "";
+                $scope.inspect.DidPassInspection = "0";
+                $scope.inspect.InspectionNote = "";
+                $scope.inspect.InspMeritAdj = "";
 
 
                 alert("updated: [lead-follow_createInspections.php" + JSON.stringify(response));
@@ -782,11 +782,11 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
                 document.getElementById("editButtonPositions").style.display = "block";
 
                 //added to clear the values from scope after they have been sent to DB & received
-                $scope.pos.PosStartDate = "";
-                $scope.pos.PosEndDate = "";
-                $scope.pos.JBPosition = "";
-                $scope.pos.PosDidFail = "0";
-                $scope.pos.PosNote = "";
+                $scope.posit.PosStartDate = "";
+                $scope.posit.PosEndDate = "";
+                $scope.posit.JBPosition = "";
+                $scope.posit.PosDidFail = "0";
+                $scope.posit.PosNote = "";
 
                 alert("updated: [lead-follow_createPositions.php" + JSON.stringify(response));
             },function(result){
@@ -833,10 +833,10 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
                 document.getElementById("editButtonRanks").style.display = "block";
 
                 //added to clear the values from scope after they have been sent to DB & received
-                $scope.rank.RankObtainedDate = "";
-                $scope.rank.RankDidFail = "0";
-                $scope.rank.RankPromotionNote = "";
-                $scope.rank.JBRank = "";
+                $scope.rEvent.RankObtainedDate = "";
+                $scope.rEvent.RankDidFail = "0";
+                $scope.rEvent.RankPromotionNote = "";
+                $scope.rEvent.JBRank = "";
 
                 alert("updated: [lead-follow_createRanks.php" + JSON.stringify(response));
             },function(result){
