@@ -737,18 +737,17 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
 
         sendData.PosStartDate+="";
         var ogDateStart = sendData.PosStartDate;
-        var ogDateEnd = sendData.PosEndDate;
-        //Andrew Changes 2/21/19
         var posStartArray=sendData.PosStartDate.split(" ");//split by space to get rid of time
         var newDateStart = new Date(ogDateStart);
         sendData.PosStartDate=dateFormat(posStartArray);
 
         sendData.PosEndDate+="";
+        var ogDateEnd = sendData.PosEndDate;
         var posEndArray=sendData.PosEndDate.split(" ");//split by space to get rid of time
         var newDateEnd = new Date(ogDateEnd);
         sendData.PosEndDate=dateFormat(posEndArray);
 
-        alert(JSON.stringify(sendData));
+        //alert(JSON.stringify(sendData));
 
         //create position entry with createPosition.php
         $http ({
@@ -806,7 +805,7 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
         var rankDateArray=sendData.RankObtainedDate.split(" ");//split by space to get rid of time
 
         var newDate = new Date(ogDate);
-        sendData.RankDate=dateFormat(rankDateArray);
+        sendData.RankObtainedDate=dateFormat(rankDateArray);
 
         alert(JSON.stringify(sendData));
 
@@ -819,7 +818,7 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
             function(response)
             {
                 if(response.data)
-                sendData.JBRankID=response.data.id;
+                    sendData.JBRankID=response.data.id;
                     sendData.RankObtainedDate= newDate;
                     $scope.rank.push(sendData);
 

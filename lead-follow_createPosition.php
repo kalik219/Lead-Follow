@@ -36,7 +36,7 @@ if (isset($_POST['PosStartDate'])) {
     $PosStartDate= $_POST['PosStartDate'];
 }
 if (isset($_POST['PosEndDate'])) {
-    $PosyEndDate= $_POST['PosEndDate'];
+    $PosEndDate= $_POST['PosEndDate'];
 }
 
 $sql = "INSERT INTO tblJBPositions(fkClassDetailID,JBPosition,PosStartDate,PosEndDate,PosNote,PosDidFail) 
