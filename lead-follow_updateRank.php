@@ -26,23 +26,29 @@ if (isset($_POST['op'])) {
 
 
 if($op=='UPDATE') {
+    $sql = "SELECT tblJBRanks.*
+            FROM tblJBRanks
+            WHERE JBRankID = $JBRankID";
 
-    $validRankDate = strtotime($_POST['RankObtainedDate']);
-    $validRankDate = date('Y-m-d', $validRankDate);//off by one (gets fixed when retrieving in the js)
-    $RankObtainedDate = $validRankDate;
+    if ($result = $conn->runSelectQuery($sql)) {
+        $fieldinfo = mysqli_fetch_fields($result);
+        $row = $result->fetch_assoc();
 
-    $RankPromotionNote= $_POST['RankPromotionNote'];
-    $RankDidFail= $_POST['RankDidFail'];
+        foreach ($fieldinfo as $val) {
+            $fieldName = $val->name;
 
-    $sql = "UPDATE tblJBRanks
-SET
-  RankObtainedDate = '$RankObtainedDate',
-  RankPromotionNote = '$RankPromotionNote',
-  RankDidFail = '$RankDidFail'
-WHERE
-  JBRankID = '$JBRankID'";
-
+            // check to see if there is a post value
+            if (isset($_POST[$fieldName])) {
+                $fieldValue = filter_input(INPUT_POST, $fieldName);
+                $sql = "UPDATE tblJBRanks set $fieldName = '$fieldValue' WHERE  JBRankID=$JBRankID";
+                $conn->runQuery($sql);
+            }
+        }
+    }
     $result = $conn->runQuery($sql);
+
+    print_r($sql);
+
     if ($result === TRUE) {
         echo "Record updated successfully";
     } else {

@@ -24,25 +24,29 @@ if (isset($_POST['op'])) {
 }
 
 if($op=='UPDATE') {
-    $validInspec = strtotime($_POST['InspectionDate']);
-    $validInspec = date('Y-m-d', $validInspec);//off by one (gets fixed when retrieving in the js)
-    $InspectionDate = $validInspec;
+    $sql = "SELECT tblJBInspections.*
+            FROM tblJBInspections
+            WHERE JBInspectionID = $JBInspectionID";
 
-    $InspectionNote = $_POST['InspectionNote'];
-    $DidPassInspection = $_POST['DidPassInspection'];
-    $InspMeritAdj = $_POST['InspMeritAdj'];
+    if ($result = $conn->runSelectQuery($sql)) {
+        $fieldinfo = mysqli_fetch_fields($result);
+        $row = $result->fetch_assoc();
 
-    $sql = "UPDATE tblJBInspections
-SET
-  InspectionDate = '$InspectionDate',
-  InspectionNote = '$InspectionNote',
-  DidPassInspection = '$DidPassInspection',
-  InspMeritAdj = '$InspMeritAdj'
-WHERE
-  JBInspectionID = '$JBInspectionID'";
+        foreach ($fieldinfo as $val) {
+            $fieldName = $val->name;
 
-
+            // check to see if there is a post value
+            if (isset($_POST[$fieldName])) {
+                $fieldValue = filter_input(INPUT_POST, $fieldName);
+                $sql = "UPDATE tblJBInspections set $fieldName = '$fieldValue' WHERE  JBInspectionID=$JBInspectionID";
+                $conn->runQuery($sql);
+            }
+        }
+    }
     $result = $conn->runQuery($sql);
+
+    print_r($sql);
+
     if ($result === TRUE) {
         echo "Record updated successfully";
     } else {
