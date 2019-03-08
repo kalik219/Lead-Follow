@@ -294,14 +294,8 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
               //copy current row
               var sendData=angular.copy(updates[j]);            //instead of duties[j]?
 
-              sendData.DutyStartDate+="";
-              //Andrew Changes 2/21/19
-                var dutyStartArray=sendData.DutyStartDate.split(" ");//split by space to get rid of time
-                sendData.DutyStartDate=dateFormat(dutyStartArray);
-
-                sendData.DutyEndDate+="";
-                var dutyEndArray=sendData.DutyEndDate.split(" ");//split by space to get rid of time
-                sendData.DutyEndDate=dateFormat(dutyEndArray);
+              sendData.DutyStartDate=convertToSqlDate(sendData.DutyStartDate);
+              sendData.DutyEndDate=convertToSqlDate(sendData.DutyEndDate);
 
               //update using updateDuty.php
               $http ({
@@ -337,14 +331,7 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
           {
               //copy current row
               var sendData=angular.copy($scope.tasks[j]);
-              sendData.EventDate+="";//make the whole thing a string
-
-              //Andrew dateArray added here
-                var tasksDateArray=sendData.EventDate.split(" ");//split by space to get rid of time
-                sendData.EventDate=dateFormat(tasksDateArray);
-              //delete not needed info
-              delete sendData.Task;
-              delete sendData.TaskNumber;
+              sendData.EventDate=convertToSqlDate(sendData.EventDate);
 
               //update using updateLeadFollow.php
               $http ({
@@ -415,9 +402,8 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
             {
                 //copy current row
                 var sendData=angular.copy(updates[j]);            //instead of duties[j]?
-                sendData.InspectionDate+="";
-                var inspecDateArray=sendData.InspectionDate.split(" ");//split by space to get rid of time
-                sendData.InspectionDate=dateFormat(inspecDateArray);
+
+                sendData.InspectionDate=convertToSqlDate(sendData.InspectionDate);
 
                 //update using updateInspection.php
                 $http ({
@@ -486,14 +472,8 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
           {
               //copy current row
               var sendData=angular.copy(updates[j]);
-              sendData.PosStartDate+="";
-              //Andrew Changes 2/21/19
-                var posStartArray=sendData.PosStartDate.split(" ");//split by space to get rid of time
-                sendData.PosStartDate=dateFormat(posStartArray);
-
-                sendData.PosEndDate+="";
-                var posEndArray=sendData.PosEndDate.split(" ");//split by space to get rid of time
-                sendData.PosEndDate=dateFormat(posEndArray);
+              sendData.PosStartDate=convertToSqlDate(sendData.PosStartDate);
+              sendData.PosEndDate=convertToSqlDate(sendData.PosEndDate);
 
               //update using updatePosition.php
               $http ({
@@ -559,9 +539,7 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
           {
               //copy current row
               var sendData=angular.copy(updates[j]);
-              sendData.RankObtainedDate+="";
-                var rankDateArray=sendData.RankObtainedDate.split(" ");//split by space to get rid of time
-                sendData.RankObtainedDate=dateFormat(rankDateArray);
+              sendData.RankObtainedDate=convertToSqlDate(sendData.RankObtainedDate);
 
               //update using updateRank.php
               $http ({
@@ -599,18 +577,11 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
         //pull JobPosition from dropdown
         sendData.JobPosition=$scope.duty.JobPosition.DutyPosition;
 
-        var ogDateStart = sendData.DutyStartDate;
-        var ogDateEnd = sendData.DutyEndDate;
+        var newDateStart = new Date(sendData.DutyStartDate);
+        sendData.DutyStartDate=convertToSqlDate(sendData.DutyStartDate);
+        var newDateEnd = new Date(sendData.DutyEndDate);
+        sendData.DutyEndDate=convertToSqlDate(sendData.DutyEndDate);
 
-        sendData.DutyStartDate+="";
-        var dutyStartArray=sendData.DutyStartDate.split(" ");//split by space to get rid of time
-        var newDateStart = new Date(ogDateStart);
-        sendData.DutyStartDate=dateFormat(dutyStartArray);
-
-        sendData.DutyEndDate+="";
-        var dutyEndArray=sendData.DutyEndDate.split(" ");//split by space to get rid of time
-        var newDateEnd = new Date(ogDateEnd);
-        sendData.DutyEndDate=dateFormat(dutyEndArray);
 
         if(sendData.DutyDidFail!="1")
         {
@@ -675,12 +646,8 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
 
 
         //Date display changes
-        sendData.InspectionDate+="";
-        var ogDate = sendData.InspectionDate;
-        var inspectDateArray=sendData.InspectionDate.split(" ");//split by space to get rid of time
-
-        var newDate = new Date(ogDate);
-        sendData.InspectionDate=dateFormat(inspectDateArray);
+        var newDate = new Date(sendData.InspectionDate);
+        sendData.InspectionDate=convertToSqlDate(sendData.InspectionDate);
 
         alert(JSON.stringify(sendData));
         //create inspection entry using createInspections.php
@@ -735,19 +702,13 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
         //pull JBPosition from dropdown
         sendData.JBPosition=$scope.posit.JBPosition.JBPosition;
 
-        sendData.PosStartDate+="";
-        var ogDateStart = sendData.PosStartDate;
-        var posStartArray=sendData.PosStartDate.split(" ");//split by space to get rid of time
-        var newDateStart = new Date(ogDateStart);
-        sendData.PosStartDate=dateFormat(posStartArray);
+        var newDateStart = new Date(sendData.PosStartDate);
+        sendData.PosStartDate=convertToSqlDate(sendData.PosStartDate);
 
-        sendData.PosEndDate+="";
-        var ogDateEnd = sendData.PosEndDate;
-        var posEndArray=sendData.PosEndDate.split(" ");//split by space to get rid of time
-        var newDateEnd = new Date(ogDateEnd);
-        sendData.PosEndDate=dateFormat(posEndArray);
+        var newDateEnd = new Date(sendData.PosEndDate);
+        sendData.PosEndDate=convertToSqlDate(sendData.PosEndDate);
 
-        //alert(JSON.stringify(sendData));
+        alert(JSON.stringify(sendData));
 
         //create position entry with createPosition.php
         $http ({
@@ -800,12 +761,8 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
         sendData.fkClassDetailID = $scope.tasks[0].ClassDetailID;
         sendData.JBRank=$scope.rEvent.JBRank.RankObtained;
 
-        sendData.RankObtainedDate+="";
-        var ogDate = sendData.RankObtainedDate;
-        var rankDateArray=sendData.RankObtainedDate.split(" ");//split by space to get rid of time
-
-        var newDate = new Date(ogDate);
-        sendData.RankObtainedDate=dateFormat(rankDateArray);
+        var newDate = new Date(sendData.RankObtainedDate);
+        sendData.RankObtainedDate=convertToSqlDate(sendData.RankObtainedDate);
 
         alert(JSON.stringify(sendData));
 
@@ -818,7 +775,7 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
             function(response)
             {
                 if(response.data)
-                    sendData.JBRankID=response.data.id;
+                sendData.JBRankID=response.data.id;
                     sendData.RankObtainedDate= newDate;
                     $scope.rank.push(sendData);
 
@@ -869,43 +826,27 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
             for(var i=0; i<$scope.tasks.length; i++)
             {
               //change made to format dates in tasks table
-                $scope.tasks[i].EventDate=$scope.tasks[i].EventDate.split(" ")[0];
-                $scope.tasks[i].EventDate+="T00:00:00";//added to fix the incorrect date that is returned from php
-                $scope.tasks[i].EventDate=new Date($scope.tasks[i].EventDate);//need to be a date to display
+                $scope.tasks[i].EventDate=convertToHtmlDate($scope.tasks[i].EventDate);
             }
             //Changes 2/21/29
             for(var j=0; j<$scope.duties.length; j++)
             {
-                $scope.duties[j].DutyStartDate=$scope.duties[j].DutyStartDate.split(" ")[0];
-                $scope.duties[j].DutyStartDate+="T00:00:00";
-                $scope.duties[j].DutyStartDate=new Date($scope.duties[j].DutyStartDate);
-
-                $scope.duties[j].DutyEndDate=$scope.duties[j].DutyEndDate.split(" ")[0];
-                $scope.duties[j].DutyEndDate+="T00:00:00";
-                $scope.duties[j].DutyEndDate=new Date($scope.duties[j].DutyEndDate);
+                $scope.duties[j].DutyStartDate=convertToHtmlDate($scope.duties[j].DutyStartDate);
+                $scope.duties[j].DutyEndDate=convertToHtmlDate($scope.duties[j].DutyEndDate);
             }
             for(var k=0; k<$scope.inspections.length; k++)
             {
-                $scope.inspections[k].InspectionDate=$scope.inspections[k].InspectionDate.split(" ")[0];
-                $scope.inspections[k].InspectionDate+="T00:00:00";
-                $scope.inspections[k].InspectionDate=new Date($scope.inspections[k].InspectionDate);
+                $scope.inspections[k].InspectionDate=convertToHtmlDate($scope.inspections[k].InspectionDate);
             }
             //Changes end 2/21/19
             for(var l=0; l<$scope.pos.length; l++)
             {
-                $scope.pos[l].PosStartDate=$scope.pos[l].PosStartDate.split(" ")[0];
-                $scope.pos[l].PosStartDate+="T00:00:00";
-                $scope.pos[l].PosStartDate=new Date($scope.pos[l].PosStartDate);
-
-                $scope.pos[l].PosEndDate=$scope.pos[l].PosEndDate.split(" ")[0];
-                $scope.pos[l].PosEndDate+="T00:00:00";
-                $scope.pos[l].PosEndDate=new Date($scope.pos[l].PosEndDate);
+                $scope.pos[l].PosStartDate=convertToHtmlDate($scope.pos[l].PosStartDate);
+                $scope.pos[l].PosEndDate=convertToHtmlDate($scope.pos[l].PosEndDate);
             }
             for(var m=0; m<$scope.rank.length; m++)
             {
-                $scope.rank[m].RankObtainedDate=$scope.rank[m].RankObtainedDate.split(" ")[0];
-                $scope.rank[m].RankObtainedDate+="T00:00:00";
-                $scope.rank[m].RankObtainedDate=new Date($scope.rank[m].RankObtainedDate);
+                $scope.rank[m].RankObtainedDate=convertToHtmlDate($scope.rank[m].RankObtainedDate);
             }
             
             //create DutyPosition dropdown
@@ -1123,38 +1064,55 @@ angular.module('core-components.lead-follow').controller('leadFollowController',
         }
     }
 
-    //Date format function
-    function dateFormat(dateArray)
-    {
-        //Andrew Changes 2/21/19
-        //split by space to get rid of time
+    function convertToSqlDate(htmlDate) {
+
+        if (htmlDate === null)
+            return "0000-00-00";
+
+        //Split htmldate
+        let dateArray = htmlDate.toString().split(" ");
+
         let month;
-        if(dateArray[1]==='Jan')
-            month="01";
-        else if(dateArray[1]==='Feb')
-            month="02";
-        else if(dateArray[1]==='Mar')
-            month="03";
-        else if(dateArray[1]==='Apr')
-            month="04";
-        else if(dateArray[1]==='May')
-            month="05";
-        else if(dateArray[1]==='Jun')
-            month="06";
-        else if(dateArray[1]==='Jul')
-            month="07";
-        else if(dateArray[1]==='Aug')
-            month="08";
-        else if(dateArray[1]==='Sep')
-            month="09";
-        else if(dateArray[1]==='Oct')
-            month="10";
-        else if(dateArray[1]==='Nov')
-            month="11";
-        else
-            month="12";
-        let dateString=dateArray[3]+'-'+month+'-'+dateArray[2];
-        return dateString;
+        if (dateArray[1] === 'Jan')
+            month = "01";
+        else if (dateArray[1] === 'Feb')
+            month = "02";
+        else if (dateArray[1] === 'Mar')
+            month = "03";
+        else if (dateArray[1] === 'Apr')
+            month = "04";
+        else if (dateArray[1] === 'May')
+            month = "05";
+        else if (dateArray[1] === 'Jun')
+            month = "06";
+        else if (dateArray[1] === 'Jul')
+            month = "07";
+        else if (dateArray[1] === 'Aug')
+            month = "08";
+        else if (dateArray[1] === 'Sep')
+            month = "09";
+        else if (dateArray[1] === 'Oct')
+            month = "10";
+        else if (dateArray[1] === 'Nov')
+            month = "11";
+        else month = "12";
+
+        let sqlDate = dateArray[3] + '-' + month + '-' + dateArray[2];
+        return sqlDate;
+    }
+
+    // Converts a sqlDate formatted as "year-mm-dd 00:00"
+    // into an htmlDate formated as "Tuesday Jan 15 2019"
+    function convertToHtmlDate(sqlDate) {
+
+        if(sqlDate ===null)
+            return new Date("");
+        let tempDate = sqlDate.split(" ")[0]; //year-mm-dd
+        let htmlDate = new Date("");
+
+        if (tempDate !== "0000-00-00")
+            htmlDate = new Date(tempDate+"T00:00:00");
+        return htmlDate;
     }
 });
 
